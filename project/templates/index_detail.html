@@ -20,23 +20,14 @@
             margin: 20px auto 0 auto;
         }
 
-        .card {
-            width: 95%;
+        .image {
             max-width: 800px;
-            box-shadow: 0px 0px 10px 0px lightgray;
             margin: 20px auto;
+
         }
 
-        .row {
-            margin-top: 20px;
-        }
-
-        .col-md-6 {
-            margin-top: 20px;
-        }
-
-        .box {
-            max-width: 500px;
+        .content {
+            max-width: 800px;
             width: 95%;
             margin: 20px auto 0 auto;
             padding: 20px;
@@ -50,32 +41,80 @@
             padding: 20px;
             box-shadow: 0 0 3px 0 grey;
         }
-        .mybtns {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
 
-            margin-top: 10px;
+        .comment {
+            width: 95%;
+            max-width: 800px;
+            box-shadow: 0px 0px 10px 0px lightgray;
+            margin: 20px auto;
         }
+
         .mybtns > button {
-            margin-right: 10px;
+            margin-top: 10px;
         }
 
     </style>
+    <script>
+        $(document).ready(function () {
+            //show_comment()
+        });
+
+        // 닉네임과 코멘트를 작성 후 comments 테이블에 저장
+        function save_comment() {
+            let nickname = $('#name').val()
+            let comment = $('#comment').val()
+            $.ajax({
+                type: 'POST',
+                url: '/save-comment',
+                data: {nickname_give: nickname, comment_give: comment , num_give : num },
+                success: function (response) {
+                    alert(response['msg'])
+                    window.location.reload()
+                }
+            })
+        }
+
+        // 게시글에 달린 코멘트들을 요청한다.
+        // function show_comment() {
+        //     $.ajax({
+        //         type: "GET",
+        //         url: "/all-comment",
+        //         data: {},
+        //         success: function (response) {
+        //             let rows = response['comment_list']
+        //             for (let i = 0; i < rows.length; i++) {
+        //                 let nickname = rows[i]['nickname']
+        //                 let comment = rows[i]['comment']
+        //
+        //                 let temp_html = `<div class="comment">
+        //                                     <div class="card-body">
+        //                                         <blockquote class="blockquote mb-0">
+        //                                             <p>${comment}</p>
+        //                                             <footer class="blockquote-footer">${nickname}</cite>
+        //                                             </footer>
+        //                                         </blockquote>
+        //                                     </div>
+        //                                 </div>`
+        //                 $('#comment-list').append(temp_html)
+        //             }
+        //         }
+        //     });
+        // }
+    </script>
 </head>
 
 <body>
 <div class="container">
     <div class="row">
         <div class="col-md-6">
-            <div class="card h-100">
-                <img class="card-img-top"
-                     src="https://t1.daumcdn.net/cfile/blog/1861A43F4F2281980D" alt="..."/>
+            <div class="image">
+                <img src="https://cdn.pixabay.com/photo/2015/03/12/04/43/landscape-669619_960_720.jpg"
+                     class="img-thumbnail"
+                     style="border-radius: 20px;">
             </div>
         </div>
         <div class="col-md-6">
-            <div class="box">
+            <div class="content">
                 <h3>제목 : 좋은 곳</h3>
                 <h4>장소 : 서울시 어딘가</h4>
                 <h4>평점 : ⭐⭐⭐⭐</h4>
@@ -83,33 +122,40 @@
                     labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
                     nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
                     esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                    culpa qui officia deserunt mollit anim id est laborum.</h5>
+                    culpa qui officia deserunt mollit anim id est laborum.
+
+                </h5>
             </div>
         </div>
     </div>
     <div class="row">
         <div class="comment-box">
-            <label for="exampleFormControlTextarea1" class="form-label"><h3>댓글 입력</h3></label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-            <div class="mybtns">
-                <button onclick="posting()" type="button" class="btn btn-dark">기록하기</button>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="name" placeholder="닉네임">
+                <label for="name">닉네임</label>
             </div>
-            <div class="cards">
-                <div class="card">
+            <div class="form-floating">
+                <textarea class="form-control" placeholder="Leave a comment here" id="comment"
+                          style="height: 100px"></textarea>
+                <label for="comment">코멘트 입력</label>
+            </div>
+            <div class="mybtns">
+                <button onclick="save_comment()" type="button" class="btn btn-dark">기록하기</button>
+            </div>
+            <div class="cards" id="comment-list">
+                {% for x in comment_list %}
+                <div class="comment">
                     <div class="card-body">
                         <blockquote class="blockquote mb-0">
-                            <p>dd</p>
-                            <footer class="blockquote-footer">익명 2</cite>
+                            <p>{{ x.comment }}</p>
+                            <footer class="blockquote-footer">{{ x.nickname }}</cite>
                             </footer>
                         </blockquote>
                     </div>
                 </div>
+                {% endfor %}
             </div>
         </div>
-
-    </div>
-    <div class="row">
-
     </div>
 </div>
 
