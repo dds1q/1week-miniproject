@@ -107,52 +107,31 @@
     </style>
     <script>
         $(document).ready(function () {
-            // listing();
+            listing();
         });
 
-        /*function listing() {
+        function listing() {
             $.ajax({
                 type: 'GET',
                 url: '/travel',
                 data: {},
                 success: function (response) {
-                    let rows = response['movies']
+                    let rows = response['travel']
+                    // let image = rows[i]['filename']
 
-                    for (let i = 0; i < rows.length; i++) {
-                        title = rows[i]['title']
-                        image = rows[i]['image']
-                        desc = rows[i]['desc']
-                        star = rows[i]['star']
-                        comment = rows[i]['comment']
-
-                        let star_image = '⭐'.repeat(star)
-
-                        let temp_html = `<div class="col">
-                                        <div class="card h-100">
-                                            <img src="${image}"
-                                                 class="card-img-top">
-                                            <div class="card-body">
-                                                <h5 class="card-title">${title}</h5>
-                                                <p class="card-text">${desc}</p>
-                                                <p>${star_image}</p>
-                                                <p class="mycomment">${comment}</p>
-                                            </div>
-                                        </div>
-                                    </div>`
-
-                        $('#cards-box').append(temp_html)
-                    }
+                    temp_html = `<img src="{{ url_for('static',filename='images/10.png') }}", width="200"
+                                 style="margin-left: auto; margin-right: auto; display: block;")/>`
+                    $('#test').append(temp_html)
                 }
             })
-        }*/
+        }
+
 
         function posting() {
 
             let url = $('#url').val()
             let star = $('#star').val()
             let comment = $('#comment').val()
-
-            console.log(image)
 
             $.ajax({
                 type: 'POST',
@@ -206,6 +185,7 @@
                       enctype="multipart/form-data">
                     <input type="file" name="file"/>
                     <input type="submit"/>
+                    <p></p>
                 </form>
 
                 <div class="input-group mb-3">
@@ -311,6 +291,7 @@
 
     </div>
 </div>
+<p id="test"> test용 </p>
 </body>
 
 </html>

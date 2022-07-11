@@ -42,11 +42,21 @@ def upload_file():
       f.save("./static/images/" + str(filename) + ".png")
       # f.save("./static/1.png")
       return 'uploads 디렉토리 -> 파일 업로드 성공!'
+      # return render_template('fileUpload.html')
+
 
 @app.route("/travel", methods=["GET"])
 def movie_get():
     travel_list = list(db.travel.find({}, {'_id' : False}))
     return jsonify({'travel': travel_list})
+
+@app.route("/about/<name>")
+def admin(name):
+   return 'About %s' %name
+
+@app.route('/about/<int:user_id>')
+def get_message(user_id):
+   return 'Your ID is %d' % user_id
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
