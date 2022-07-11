@@ -1,1 +1,1 @@
-# -sail 1week-miniproject
+# 1week-miniproject
