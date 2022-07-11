@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request, jsonify
+from werkzeug.utils import secure_filename
+import os
 app = Flask(__name__)
 
 # import requests
@@ -18,24 +20,26 @@ def movie_post():
     star_receive = request.form['star_give']
     comment_receive = request.form['comment_give']
 
+    filename = len(list(db.travel.find({},{'_id':False}))) + 1
     doc = {
         'url' : url_receive,
         'star' : star_receive,
-        'comment' : comment_receive
+        'comment' : comment_receive,
+        'filename' : filename
     }
 
     db.travel.insert_one(doc)
     return jsonify({'msg':'저장 완료!'})
-
 
 #파일 업로드 처리
 @app.route('/fileUpload', methods = ['GET', 'POST'])
 def upload_file():
    if request.method == 'POST':
       f = request.files['file']
-      print(f.filename)
+      filename = len(list(db.travel.find({}, {'_id': False}))) + 1
+
       #저장할 경로 + 파일명
-      f.save("./static/images" + secure_filename(f.filename))
+      f.save("./static/images/" + str(filename) + ".png")
       # f.save("./static/1.png")
       return 'uploads 디렉토리 -> 파일 업로드 성공!'
 
