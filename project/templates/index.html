@@ -106,7 +106,7 @@
         }
     </style>
     <script>
-        $(document).ready(function () {
+        /*$(document).ready(function () {
             listing();
         });
 
@@ -124,6 +124,37 @@
                     $('#test').append(temp_html)
                 }
             })
+        }*/
+
+        //위향훈님
+        $(document).ready(function () {
+            show_list()
+        });
+
+        function show_list() {
+            $.ajax({
+                type: 'GET',
+                url: '/submit',
+                data: {},
+                success: function (response) {
+                    let rows = response['orders']
+                    for (let i = 0; i < rows.length; i++) {
+                        let title = rows[i]['title']
+                        let imgUrl = rows[i]['img']
+                        let comment = rows[i]['comment']
+                        let temp_html = `<div class="card" style="width: 18rem;">
+                                          <img src="${imgUrl}" class="card-img-top" alt="...">
+                                          <div class="card-body">
+                                            <h5 class="card-title">${title}</h5>
+                                            <p class="card-text">${comment}</p>
+                                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                                          </div>
+                                        </div>
+                                        `
+                        $('#cards-box').append(temp_html)
+                    }
+                }
+            });
         }
 
 
@@ -152,6 +183,40 @@
             $('#post-box').hide()
         }
 
+        function uploadImgPreview() {
+            // @breif 업로드 파일 읽기
+            let fileInfo = document.getElementById("upImgFile").files[0];
+
+            let reader = new FileReader();
+            // @details readAsDataURL( )을 통해 파일을 읽어 들일때 onload가 실행
+            reader.onload = function() {
+            // @details 파일의 URL을 Base64 형태로 가져온다.
+            // document.getElementById("thumbnailImg").style.background = `url(${reader.result})center/cover`;
+            document.getElementById("thumbnailImg").src = reader.result
+            };
+            // @details readAsDataURL( )을 통해 파일의 URL을 읽어온다.
+            if (fileInfo) {
+                return reader.readAsDataURL(fileInfo);
+            }
+        }
+
+        function submit_card(){
+
+            let title = $('.title').val();
+            let imgFlie = document.getElementById("thumbnailImg").src
+
+            let comment = $('.comment').val();
+            $.ajax({
+                type: 'POST',
+                url: '/submit',
+                data: {title_give : title, img_give : imgFlie, comment_give : comment},
+                success: function (response) {
+                    alert(response['msg'])
+                    window.location.reload()
+                }
+            });
+        }
+
     </script>
 </head>
 
@@ -162,8 +227,10 @@
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
         영화 기록하기
     </button>
+
 </div>
-<!-- Modal -->
+
+<!--위향훈님-->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -181,6 +248,41 @@
                 </div>
                 <!---->
                  <!--이미지 파트-->
+                <div class="mb-3">
+                    <img id="thumbnailImg" src="">
+                    <input type="text" class="form-control title" id="formGroupExampleInput" placeholder="제목을 입력하세요">
+                    <input class="form-control" type="file" id="upImgFile" onchange="uploadImgPreview();"
+                           accept="image/*"/>
+                    <textarea class="form-control comment" id="exampleFormControlTextarea1" rows="3"></textarea>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                <button type="button" class="btn btn-primary" id="submit" onclick="submit_card();">등록하기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<!--<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
+
+                <div class="form-floating mb-3">
+                    <input id="url" type="email" class="form-control" placeholder="name@example.com">
+                    <label>영화URL</label>
+                </div>
+                &lt;!&ndash;&ndash;&gt;
+                 &lt;!&ndash;이미지 파트&ndash;&gt;
                 <form action="http://localhost:5000/fileUpload" method="POST"
                       enctype="multipart/form-data">
                     <input type="file" name="file"/>
@@ -191,7 +293,7 @@
                 <div class="input-group mb-3">
                     <label class="input-group-text" for="inputGroupSelect01">별점</label>
                     <select class="form-select" id="star">
-                        <option selected>-- 선택하기 --</option>
+                        <option selected>&#45;&#45; 선택하기 &#45;&#45;</option>
                         <option value="1">⭐</option>
                         <option value="2">⭐⭐</option>
                         <option value="3">⭐⭐⭐</option>
@@ -206,11 +308,14 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                <button type="button" class="btn btn-primary" onclick="posting()">Save changes</button>
+                <button type="button" class="btn btn-primary" onclick="submit_card()">Save changes</button>
             </div>
         </div>
     </div>
-</div>
+</div>-->
+
+
+
 <!--
 <div class="mypost" id="post-box">
     <div class="form-floating mb-3">
