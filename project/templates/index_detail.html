@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+
+    <title>스파르타코딩클럽 | 부트스트랩 연습하기</title>
+    <style>
+        .container {
+            max-width: 1200px;
+            width: 95%;
+            margin: 20px auto 0 auto;
+        }
+
+        .card {
+            width: 95%;
+            max-width: 800px;
+            box-shadow: 0px 0px 10px 0px lightgray;
+            margin: 20px auto;
+        }
+
+        .row {
+            margin-top: 20px;
+        }
+
+        .col-md-6 {
+            margin-top: 20px;
+        }
+
+        .box {
+            max-width: 500px;
+            width: 95%;
+            margin: 20px auto 0 auto;
+            padding: 20px;
+            box-shadow: 0 0 3px 0 grey;
+        }
+
+        .comment-box {
+            max-width: 800px;
+            width: 95%;
+            margin: 20px auto 0 auto;
+            padding: 20px;
+            box-shadow: 0 0 3px 0 grey;
+        }
+        .mybtns {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+
+            margin-top: 10px;
+        }
+        .mybtns > button {
+            margin-right: 10px;
+        }
+
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card h-100">
+                <img class="card-img-top"
+                     src="https://t1.daumcdn.net/cfile/blog/1861A43F4F2281980D" alt="..."/>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="box">
+                <h3>제목 : 좋은 곳</h3>
+                <h4>장소 : 서울시 어딘가</h4>
+                <h4>평점 : ⭐⭐⭐⭐</h4>
+                <h5>리뷰 : Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                    labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                    nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
+                    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                    culpa qui officia deserunt mollit anim id est laborum.</h5>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="comment-box">
+            <label for="exampleFormControlTextarea1" class="form-label"><h3>댓글 입력</h3></label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            <div class="mybtns">
+                <button onclick="posting()" type="button" class="btn btn-dark">기록하기</button>
+            </div>
+            <div class="cards">
+                <div class="card">
+                    <div class="card-body">
+                        <blockquote class="blockquote mb-0">
+                            <p>dd</p>
+                            <footer class="blockquote-footer">익명 2</cite>
+                            </footer>
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+
+    </div>
+</div>
+
+</body>
+
+</html>
