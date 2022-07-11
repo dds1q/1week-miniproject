@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>G.A.D.A</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300&display=swap" rel="stylesheet">
+</head>
+<style>
+    * {
+        font-family: 'Noto Serif KR', serif;
+    }
+
+    .wrap {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+
+        margin-top: 80px;
+
+    }
+
+    .title {
+        background-color: transparent;
+
+        text-align: center;
+        font-size: 80px;
+        color: blue;
+    }
+
+    .myvideo {
+        height:100%;
+        width: 100%;
+
+
+        margin-left: 300px;
+
+
+    }
+
+    .log-in {
+        background-color: gray;
+
+        border: 1px solid black;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        height: 350px;
+        width: 300px;
+
+        margin-right: 600px;
+
+        border-radius: 10px;
+    }
+
+    .btn {
+        margin-top: 5px;
+    }
+</style>
+<body>
+<div class="title">
+    <h1>G.A.D.A</h1>
+</div>
+<div class="wrap">
+    <div class="myvideo">
+        <video muted autoplay loop>
+            <source src="/static/vol2.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div class="log-in">
+        <div>
+            <div class="input-group mb-3">
+                <span class="icon is-small is-left"><i class="fa fa-user"></i></span>
+                <input type="text" class="form-control" placeholder="🔐아이디" aria-label="Username"
+                       aria-describedby="basic-addon1" size=30>
+            </div>
+        </div>
+        <div>
+            <div class="input-group mb-3">
+                <span class="icon is-small is-left"><i class="fa fa-user"></i></span>
+                <input type="text" class="form-control" placeholder="🔐비밀번호" aria-label="Username"
+                       aria-describedby="basic-addon1"
+                       size=30>
+            </div>
+        </div>
+        <button class="btn"> 로그인</button>
+        <h5>아직 회원이 아니시라면 </h5>
+        <button> 회원가입</button>
+        <a href="/log-up">회원가입</a>
+    </div>
+</div>
+
+</body>
+</html>
