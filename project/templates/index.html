@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+
+    <title>스파르타 피디아</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            font-family: 'Gowun Dodum', sans-serif;
+        }
+
+        .mytitle {
+            width: 100%;
+            height: 250px;
+
+            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://movie-phinf.pstatic.net/20210715_95/1626338192428gTnJl_JPEG/movie_image.jpg');
+            background-position: center;
+            background-size: cover;
+
+            color: white;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mytitle > button {
+            width: 200px;
+            height: 50px;
+
+            background-color: transparent;
+            color: white;
+
+            border-radius: 50px;
+            border: 1px solid white;
+
+            margin-top: 10px;
+        }
+
+        .mytitle > button:hover {
+            border: 2px solid white;
+        }
+
+        .mycomment {
+            color: gray;
+        }
+
+        .mycards {
+            margin: 20px auto 0px auto;
+            width: 95%;
+            max-width: 1200px;
+        }
+
+        .mypost {
+            width: 95%;
+            max-width: 500px;
+            margin: 20px auto 0px auto;
+            padding: 20px;
+            box-shadow: 0px 0px 3px 0px gray;
+
+            display: none;
+        }
+
+        .mybtns {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+
+            margin-top: 20px;
+        }
+
+        .mybtns > button {
+            margin-right: 10px;
+        }
+
+        /* style.css */
+
+        /* 이미지 관련 스타일 조정 */
+        .button {
+            display: flex;
+            justify-content: center;
+        }
+
+        label {
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        /* 못생긴 기존 input 숨기기 */
+        #chooseFile {
+            visibility: hidden;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            listing();
+        });
+
+        function listing() {
+            $.ajax({
+                type: 'GET',
+                url: '/travel',
+                data: {},
+                success: function (response) {
+                    let rows = response['travel']
+                    // let image = rows[i]['filename']
+
+                    temp_html = `<img src="{{ url_for('static',filename='images/10.png') }}", width="200"
+                                 style="margin-left: auto; margin-right: auto; display: block;")/>`
+                    $('#test').append(temp_html)
+                }
+            })
+        }
+
+
+        function posting() {
+
+            let url = $('#url').val()
+            let star = $('#star').val()
+            let comment = $('#comment').val()
+
+            $.ajax({
+                type: 'POST',
+                url: '/travel',
+                data: {url_give: url, star_give: star, comment_give: comment},
+                success: function (response) {
+                    alert(response['msg'])
+                    window.location.reload()
+                }
+            });
+        }
+
+        function open_box() {
+            $('#post-box').show()
+        }
+
+        function close_box() {
+            $('#post-box').hide()
+        }
+
+    </script>
+</head>
+
+<body>
+<div class="mytitle">
+    <h1>내 생애 최고의 영화들</h1>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        영화 기록하기
+    </button>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
+
+                <div class="form-floating mb-3">
+                    <input id="url" type="email" class="form-control" placeholder="name@example.com">
+                    <label>영화URL</label>
+                </div>
+                <!---->
+                 <!--이미지 파트-->
+                <form action="http://localhost:5000/fileUpload" method="POST"
+                      enctype="multipart/form-data">
+                    <input type="file" name="file"/>
+                    <input type="submit"/>
+                    <p></p>
+                </form>
+
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="inputGroupSelect01">별점</label>
+                    <select class="form-select" id="star">
+                        <option selected>-- 선택하기 --</option>
+                        <option value="1">⭐</option>
+                        <option value="2">⭐⭐</option>
+                        <option value="3">⭐⭐⭐</option>
+                        <option value="4">⭐⭐⭐⭐</option>
+                        <option value="5">⭐⭐⭐⭐⭐</option>
+                    </select>
+                </div>
+                <div class="form-floating">
+                    <textarea id="comment" class="form-control" placeholder="Leave a comment here"></textarea>
+                    <label for="floatingTextarea2">코멘트</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                <button type="button" class="btn btn-primary" onclick="posting()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--
+<div class="mypost" id="post-box">
+    <div class="form-floating mb-3">
+        <input id="url" type="email" class="form-control" placeholder="name@example.com">
+        <label>영화URL</label>
+    </div>
+    <div class="input-group mb-3">
+        <label class="input-group-text" for="inputGroupSelect01">별점</label>
+        <select class="form-select" id="star">
+            <option selected>&#45;&#45; 선택하기 &#45;&#45;</option>
+            <option value="1">⭐</option>
+            <option value="2">⭐⭐</option>
+            <option value="3">⭐⭐⭐</option>
+            <option value="4">⭐⭐⭐⭐</option>
+            <option value="5">⭐⭐⭐⭐⭐</option>
+        </select>
+    </div>
+    <div class="form-floating">
+        <textarea id="comment" class="form-control" placeholder="Leave a comment here"></textarea>
+        <label for="floatingTextarea2">코멘트</label>
+    </div>
+    <div class="mybtns">
+        <button onclick="close_box()" type="button" class="btn btn-outline-dark">닫기</button>
+        <button onclick="posting()" type="button" class="btn btn-dark">기록하기</button>
+    </div>
+</div>-->
+
+<div class="mycards">
+    <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">
+        <div class="col">
+            <div class="card h-100">
+                <img src="https://movie-phinf.pstatic.net/20210728_221/1627440327667GyoYj_JPEG/movie_image.jpg"
+                     class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title">영화 제목이 들어갑니다</h5>
+                    <p class="card-text">여기에 영화에 대한 설명이 들어갑니다.</p>
+                    <p>⭐⭐⭐</p>
+                    <p class="mycomment">나의 한줄 평을 씁니다</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card h-100">
+                <img src="https://movie-phinf.pstatic.net/20210728_221/1627440327667GyoYj_JPEG/movie_image.jpg"
+                     class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title">영화 제목이 들어갑니다</h5>
+                    <p class="card-text">여기에 영화에 대한 설명이 들어갑니다.</p>
+                    <p>⭐⭐⭐</p>
+                    <p class="mycomment">나의 한줄 평을 씁니다</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card h-100">
+                <img src="https://movie-phinf.pstatic.net/20210728_221/1627440327667GyoYj_JPEG/movie_image.jpg"
+                     class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title">영화 제목이 들어갑니다</h5>
+                    <p class="card-text">여기에 영화에 대한 설명이 들어갑니다.</p>
+                    <p>⭐⭐⭐</p>
+                    <p class="mycomment">나의 한줄 평을 씁니다</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card h-100">
+                <img src="https://movie-phinf.pstatic.net/20210728_221/1627440327667GyoYj_JPEG/movie_image.jpg"
+                     class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title">영화 제목이 들어갑니다</h5>
+                    <p class="card-text">여기에 영화에 대한 설명이 들어갑니다.</p>
+                    <p>⭐⭐⭐</p>
+                    <p class="mycomment">나의 한줄 평을 씁니다</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<p id="test"> test용 </p>
+</body>
+
+</html>
