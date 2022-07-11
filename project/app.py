@@ -27,6 +27,18 @@ def movie_post():
     db.travel.insert_one(doc)
     return jsonify({'msg':'저장 완료!'})
 
+
+#파일 업로드 처리
+@app.route('/fileUpload', methods = ['GET', 'POST'])
+def upload_file():
+   if request.method == 'POST':
+      f = request.files['file']
+      print(f.filename)
+      #저장할 경로 + 파일명
+      f.save("./static/images" + secure_filename(f.filename))
+      # f.save("./static/1.png")
+      return 'uploads 디렉토리 -> 파일 업로드 성공!'
+
 @app.route("/travel", methods=["GET"])
 def movie_get():
     travel_list = list(db.travel.find({}, {'_id' : False}))
