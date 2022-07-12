@@ -7,7 +7,10 @@ app = Flask(__name__)
 # from bs4 import BeautifulSoup
 
 from pymongo import MongoClient
+# 인권
 client = MongoClient('mongodb+srv://test:sparta@cluster0.aaaog.mongodb.net/Cluster0?retryWrites=true&w=majority')
+# 조현우님
+# client = MongoClient('mongodb+srv://test:sparta@cluster0.aaaog.mongodb.net/Cluster0?retryWrites=true&w=majority')
 db = client.dbsparta
 
 @app.route('/')
@@ -17,6 +20,10 @@ def home():
 @app.route("/about/<name>")
 def admin(name):
    return 'About %s' %name
+
+@app.route("/login")
+def login():
+   return render_template('login.html')
 
 @app.route('/about/<int:user_id>')
 def get_message(user_id):
