@@ -14,14 +14,12 @@ app.config['UPLOAD_FOLDER'] = "./static/profile_pics"
 
 SECRET_KEY = 'SPARTA'
 
-client = MongoClient('mongodb+srv://jhw3874:H8w9113874@cluster0.yqjacoo.mongodb.net/?retryWrites=true&w=majority')
-db = client.dbsparta_plus_week4
+# client = MongoClient('mongodb+srv://jhw3874:H8w9113874@cluster0.yqjacoo.mongodb.net/?retryWrites=true&w=majority')
+# db = client.dbsparta_plus_week4
 
 # 인권
-# client = MongoClient('mongodb+srv://test:sparta@cluster0.aaaog.mongodb.net/Cluster0?retryWrites=true&w=majority')
-# 조현우님
-# client = MongoClient('mongodb+srv://test:sparta@cluster0.aaaog.mongodb.net/Cluster0?retryWrites=true&w=majority')
-# db = client.dbsparta
+client = MongoClient('mongodb+srv://test:sparta@cluster0.aaaog.mongodb.net/Cluster0?retryWrites=true&w=majority')
+db = client.dbsparta
 
 @app.route('/')
 def home():
