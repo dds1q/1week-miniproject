@@ -8,30 +8,32 @@ db = client.dbsparta
 @app.route('/')
 def home():
     App_list = list(db.App.find({}, {'_id': False}))
-    return render_template('index.html', App_list = App_list )
+    id = '이동규'
+    return render_template('index.html', App_list = App_list , id = id )
 
 @app.route('/detail', methods=["GET"])
 def home1():
-    num_receive = request.args.get("num_give")
+    id = '이동규'
+    num_receive = int(request.args.get("num_give"))
+    board = db.App.find_one({'num':num_receive})
+    comment_list = list(db.comments.find({'num':num_receive},{'_id': False}) )
 
-    board = db.App.find_one({'num':int(num_receive)})
-    comment_list = list(db.comments.find({'num':int(num_receive)},{'_id': False}) )
-    return render_template('index_detail.html',comment_list = comment_list , board = board )
+    like_count= db.likes.count_documents({"num": num_receive})
+    chkLike = bool(db.likes.find_one({"num": num_receive,"username":id }))
+    return render_template('index_detail.html',comment_list = comment_list , board = board
+                           , id = id , like_count = like_count , chkLike = chkLike )
 
 @app.route("/save-comment", methods=["POST"])
 def comment_post():
     nickname_receive = request.form['nickname_give']
     comment_receive = request.form['comment_give']
     num_receive = request.form['num_give']
-
     doc = {
         'nickname':nickname_receive,
         'comment': comment_receive,
         'num':int(num_receive)
     }
-
     db.comments.insert_one( doc )
-
     return jsonify({'msg':'저장 완료!'})
 
 # 코멘트받아오기
@@ -69,6 +71,29 @@ def web_write_post():
 def web_write_get():
     write_list = list(db.App.find({}, {'_id': False}))
     return jsonify({'orders': write_list})
+
+@app.route('/update_like', methods=['POST'])
+def update_like():
+    # 사용자 이름
+    username = '이동규'
+    # 게시글 고유번호
+    num_receive = int(request.form["num_give"])
+    # 명령( 좋아요 등록할지 취소할지 )
+    action_receive = request.form["action_give"]
+    doc = {
+        "num": num_receive,
+        "username": username
+    }
+    if action_receive == "like":
+        db.likes.insert_one(doc)
+    else:
+        db.likes.delete_one(doc)
+
+    # action 이후 좋아요 개수를 구한다
+    count = db.likes.count_documents({"num": num_receive })
+
+    return jsonify({"result": "success", 'msg': 'updated', "count": count})
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
