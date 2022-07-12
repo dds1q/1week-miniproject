@@ -21,7 +21,7 @@ SECRET_KEY = 'SPARTA'
 client = MongoClient('mongodb+srv://test:sparta@cluster0.aaaog.mongodb.net/Cluster0?retryWrites=true&w=majority')
 db = client.dbsparta
 
-@app.route('/')
+@app.route('/main')
 def home():
     App_list = list(db.App.find({}, {'_id': False}))
     return render_template('index.html', App_list=App_list)
@@ -31,7 +31,7 @@ def admin(name):
    return 'About %s' %name
 
 
-@app.route('/login')
+@app.route('/')
 def login():
     msg = request.args.get("msg")
     return render_template('login.html', msg=msg)
