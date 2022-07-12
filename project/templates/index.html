@@ -5,6 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <!-- Bulma CSS 링크 -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -14,18 +17,27 @@
 
     <title>스파르타 피디아</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+    <!--    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">-->
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+
+
+
+
 
     <style>
-        * {
+        /** {
             font-family: 'Gowun Dodum', sans-serif;
+        }
+*/
+        * {
+            font-family: 'Jua', sans-serif;
         }
 
         .mytitle {
             width: 100%;
-            height: 250px;
+            height: 400px;
 
-            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://movie-phinf.pstatic.net/20210715_95/1626338192428gTnJl_JPEG/movie_image.jpg');
+            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://wishbeen-seoul.s3.ap-northeast-2.amazonaws.com/plan/1463029230608__%EC%8A%AC%EB%A1%9C%EB%B2%A0%EB%8B%88%EC%95%8403.jpg');
             background-position: center;
             background-size: cover;
 
@@ -59,9 +71,21 @@
         }
 
         .mycards {
-            margin: 20px auto 0px auto;
+            /*margin: 20px auto 0px auto;
+
+            max-width: 1200px;*/
             width: 95%;
-            max-width: 1200px;
+            max-width: 1100px;
+            margin: 20px auto 0px auto;
+        }
+        .card {
+            box-shadow: 5px 5px 3px 3px grey;
+        }
+
+        .section {
+            width: 600px;
+            max-width: 100vw;
+            margin: auto;
         }
 
         .mypost {
@@ -106,32 +130,14 @@
         }
     </style>
     <script>
-        /*$(document).ready(function () {
-            listing();
-        });
 
-        function listing() {
-            $.ajax({
-                type: 'GET',
-                url: '/travel',
-                data: {},
-                success: function (response) {
-                    let rows = response['travel']
-                    // let image = rows[i]['filename']
-
-                    temp_html = `<img src="{{ url_for('static',filename='images/10.png') }}", width="200"
-                                 style="margin-left: auto; margin-right: auto; display: block;")/>`
-                    $('#test').append(temp_html)
-                }
-            })
-        }*/
 
         //위향훈님
         $(document).ready(function () {
-            //show_list()
+            // show_list()
         });
 
-        function show_list() {
+        /*function show_list() {
             $.ajax({
                 type: 'GET',
                 url: '/submit',
@@ -144,6 +150,7 @@
                         let comment = rows[i]['comment']
                         let star_num = rows[i]['star']
                         let desc = rows[i]['desc']
+                        let time = rows[i]['time']
 
                         let star = '⭐'.repeat(star_num)
 
@@ -155,6 +162,7 @@
                                                     <p class="card-text">${desc}</p>
                                                     <p>${star}</p>
                                                     <p class="mycomment">${comment}</p>
+                                                    <p class="mycomment">${time}</p>
                                                     <a href="#" class="btn btn-primary">Go somewhere</a>
                                                 </div>
                                             </div>
@@ -164,7 +172,7 @@
                     }
                 }
             });
-        }
+        }*/
 
 
         function posting() {
@@ -192,16 +200,18 @@
             $('#post-box').hide()
         }
 
+
+
         function uploadImgPreview() {
             // @breif 업로드 파일 읽기
             let fileInfo = document.getElementById("upImgFile").files[0];
 
             let reader = new FileReader();
             // @details readAsDataURL( )을 통해 파일을 읽어 들일때 onload가 실행
-            reader.onload = function() {
-            // @details 파일의 URL을 Base64 형태로 가져온다.
-            // document.getElementById("thumbnailImg").style.background = `url(${reader.result})center/cover`;
-            document.getElementById("thumbnailImg").src = reader.result
+            reader.onload = function () {
+                // @details 파일의 URL을 Base64 형태로 가져온다.
+                // document.getElementById("thumbnailImg").style.background = `url(${reader.result})center/cover`;
+                document.getElementById("thumbnailImg").src = reader.result
             };
             // @details readAsDataURL( )을 통해 파일의 URL을 읽어온다.
             if (fileInfo) {
@@ -209,17 +219,19 @@
             }
         }
 
-        function submit_card(){
+        function submit_card() {
+
             let title = $('.title').val();
             let imgFlie = document.getElementById("thumbnailImg").src
             let star = $('#star').val()
             let desc = $('#desc').val()
+            let url = $('#url').val()
 
-            let comment = $('#comment').val();
+            let comment = $('.comment').val();
             $.ajax({
                 type: 'POST',
                 url: '/submit',
-                data: {title_give : title, img_give : imgFlie, comment_give : comment, star_give: star, desc_give : desc},
+                data: {title_give: title, img_give: imgFlie, comment_give: comment, star_give: star, desc_give: desc, url_give: url},
                 success: function (response) {
                     alert(response['msg'])
                     window.location.reload()
@@ -232,10 +244,11 @@
 
 <body>
 <div class="mytitle">
-    <h1>내 생애 최고의 영화들</h1>
+    <h1>GADA의 여행일지</h1>
     <!-- Button trigger modal -->
+    <h3>[ {{ user_info.username }} ]님 환영합니다!</h3>
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        영화 기록하기
+        여행지 기록하기
     </button>
 
 </div>
@@ -245,26 +258,26 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLabel">여행일지</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <!---->
-                 <!--이미지 파트-->
+                <!--이미지 파트-->
                 <div class="mb-3">
                     <center>
-                        <img id="thumbnailImg" src="" alt="이미지" width="150" height="150">
+                        <img id="thumbnailImg" src="" alt="이미지 미리보기" width="150" height="150">
                         <h5></h5>
                     </center>
-                    <input id="url" type="email" class="form-control" placeholder="영화 URL">
+                    <!--                    <input type="text" class="form-control title" id="url" placeholder="영화 URL">-->
+                    <input type="text" class="form-control title" id="formGroupExampleInput" placeholder="장소 이름을 입력하세요">
                     <h5></h5>
-<!--                    <input type="text" class="form-control title" id="url" placeholder="영화 URL">-->
-                    <input type="text" class="form-control title" id="formGroupExampleInput" placeholder="제목을 입력하세요">
+                    <input id="url" type="email" class="form-control" placeholder="주소">
                     <h5></h5>
                     <input class="form-control" type="file" id="upImgFile" onchange="uploadImgPreview();"
                            accept="image/*"/>
                     <h5></h5>
-                    <textarea class="form-control comment" id="desc" rows="3" placeholder="줄거리를 입력하세요"></textarea>
+                    <textarea class="form-control comment" id="desc" rows="3" placeholder="장소에 대한 설명을 입력하세요"></textarea>
                     <h5></h5>
                     <div class="input-group mb-3">
                         <label class="input-group-text" for="inputGroupSelect01">별점</label>
@@ -278,7 +291,8 @@
                         </select>
                     </div>
                     <h5></h5>
-                    <textarea class="form-control comment" id="comment" rows="3" placeholder="후기를 입력하세요"></textarea>
+                    <textarea class="form-control comment" id="comment" rows="3"
+                              placeholder="후기를 입력하세요"></textarea>
 
                 </div>
             </div>
@@ -290,84 +304,15 @@
     </div>
 </div>
 
-
-<!-- Modal -->
-<!--<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-
-
-
-                <div class="form-floating mb-3">
-                    <input id="url" type="email" class="form-control" placeholder="name@example.com">
-                    <label>영화URL</label>
-                </div>
-                &lt;!&ndash;&ndash;&gt;
-                 &lt;!&ndash;이미지 파트&ndash;&gt;
-                <form action="http://localhost:5000/fileUpload" method="POST"
-                      enctype="multipart/form-data">
-                    <input type="file" name="file"/>
-                    <input type="submit"/>
-                    <p></p>
-                </form>
-
-                <div class="input-group mb-3">
-                    <label class="input-group-text" for="inputGroupSelect01">별점</label>
-                    <select class="form-select" id="star">
-                        <option selected>&#45;&#45; 선택하기 &#45;&#45;</option>
-                        <option value="1">⭐</option>
-                        <option value="2">⭐⭐</option>
-                        <option value="3">⭐⭐⭐</option>
-                        <option value="4">⭐⭐⭐⭐</option>
-                        <option value="5">⭐⭐⭐⭐⭐</option>
-                    </select>
-                </div>
-                <div class="form-floating">
-                    <textarea id="comment" class="form-control" placeholder="Leave a comment here"></textarea>
-                    <label for="floatingTextarea2">코멘트</label>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                <button type="button" class="btn btn-primary" onclick="submit_card()">Save changes</button>
-            </div>
-        </div>
+<section class="section">
+    <div class="container">
+        <h1 class="title">Section</h1>
+        <h2 class="subtitle">
+            A simple container to divide your page into <strong>sections</strong>, like the one you're
+            currently reading
+        </h2>
     </div>
-</div>-->
-
-
-
-<!--
-<div class="mypost" id="post-box">
-    <div class="form-floating mb-3">
-        <input id="url" type="email" class="form-control" placeholder="name@example.com">
-        <label>영화URL</label>
-    </div>
-    <div class="input-group mb-3">
-        <label class="input-group-text" for="inputGroupSelect01">별점</label>
-        <select class="form-select" id="star">
-            <option selected>&#45;&#45; 선택하기 &#45;&#45;</option>
-            <option value="1">⭐</option>
-            <option value="2">⭐⭐</option>
-            <option value="3">⭐⭐⭐</option>
-            <option value="4">⭐⭐⭐⭐</option>
-            <option value="5">⭐⭐⭐⭐⭐</option>
-        </select>
-    </div>
-    <div class="form-floating">
-        <textarea id="comment" class="form-control" placeholder="Leave a comment here"></textarea>
-        <label for="floatingTextarea2">코멘트</label>
-    </div>
-    <div class="mybtns">
-        <button onclick="close_box()" type="button" class="btn btn-outline-dark">닫기</button>
-        <button onclick="posting()" type="button" class="btn btn-dark">기록하기</button>
-    </div>
-</div>-->
+</section>
 
 <div class="mycards">
     <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">
@@ -377,16 +322,20 @@
                 <img src={{ App.img }}
                      class="card-img-top">
                 <div class="card-body">
-                    <h5 class="card-title">{{ App.title }}</h5>
+                    <h5 class="card-title">이름 : {{ App.title }}</h5>
+                    <p class="card-username">작성자 : {{ App.username }}</p>
                     <p class="card-text">{{ App.content }}</p>
-                    <p>{{App.star}}</p>
-                    <p class="mycomment">{{ App.desc }}</p>
+                    <p>주소 : {{ App.url }}</p>
+                    <p>평점 : {{App.star}}</p>
+                    <p class="mycomment">리뷰 : {{ App.desc }}</p>
+                    <p>작성시간 : {{App.time}}</p>
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
 </div>
+<p id="test"> test용 </p>
 </body>
 
 </html>

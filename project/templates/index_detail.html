@@ -171,6 +171,7 @@
         <div class="col-md-6">
             <div class="content">
                 <h3>제목 : {{ board.title }}</h3>
+                <h4>작성자 : {{ board.username }}</h4>
                 <h4>장소 : {{ board.desc }}</h4>
                 <h4>평점 : {{ board.star }}</h4>
                 <a id="heart"  onclick="toggle_like('{{board.num}}')">
@@ -179,7 +180,7 @@
                     {% else %}
                     <i class="bi bi-heart" aria-hidden="true"></i>
                     {% endif %}
-                    <span style="font-size: 15pt">{{ like_count }}</span>
+                    <span style="font-size: 17pt; font-weight: bold">{{ like_count }}</span>
                 </a>
                 <h5>리뷰 : {{ board.comment }}</h5>
             </div>
