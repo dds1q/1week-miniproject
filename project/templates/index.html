@@ -79,6 +79,10 @@
             margin: 20px auto 0px auto;
         }
 
+        .card {
+            box-shadow: 5px 5px 3px 3px grey;
+        }
+
         .section {
             width: 600px;
             max-width: 100vw;
@@ -131,10 +135,10 @@
 
         //위향훈님
         $(document).ready(function () {
-            show_list()
+            // show_list()
         });
 
-        function show_list() {
+        /*function show_list() {
             $.ajax({
                 type: 'GET',
                 url: '/submit',
@@ -169,7 +173,7 @@
                     }
                 }
             });
-        }
+        }*/
 
 
         function posting() {
@@ -286,7 +290,7 @@
                         </select>
                     </div>
                     <h5></h5>
-                    <textarea class="form-control comment" id="exampleFormControlTextarea1" rows="3"
+                    <textarea class="form-control comment" id="comment" rows="3"
                               placeholder="후기를 입력하세요"></textarea>
 
                 </div>
@@ -310,7 +314,7 @@
 </section>
 
 
-<div class="mycards">
+<!--<div class="mycards">
     <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">
         <div class="col" id="card">
 
@@ -365,6 +369,24 @@
             </div>
         </div>
 
+    </div>
+</div>-->
+<div class="mycards">
+    <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">
+        {% for App in App_list%}
+        <div class="col">
+            <div class="card h-100" onclick="window.location.href='/detail?num_give={{ App.num }}'">
+                <img src={{ App.img }}
+                     class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title">{{ App.title }}</h5>
+                    <p class="card-text">{{ App.content }}</p>
+                    <p>{{App.star}}</p>
+                    <p class="mycomment">{{ App.desc }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
     </div>
 </div>
 <p id="test"> test용 </p>
