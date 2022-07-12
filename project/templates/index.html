@@ -226,12 +226,13 @@
             let imgFlie = document.getElementById("thumbnailImg").src
             let star = $('#star').val()
             let desc = $('#desc').val()
+            let url = $('#url').val()
 
             let comment = $('.comment').val();
             $.ajax({
                 type: 'POST',
                 url: '/submit',
-                data: {title_give: title, img_give: imgFlie, comment_give: comment, star_give: star, desc_give: desc},
+                data: {title_give: title, img_give: imgFlie, comment_give: comment, star_give: star, desc_give: desc, url_give: url},
                 success: function (response) {
                     alert(response['msg'])
                     window.location.reload()
@@ -268,15 +269,15 @@
                         <img id="thumbnailImg" src="" alt="이미지" width="150" height="150">
                         <h5></h5>
                     </center>
-                    <input id="url" type="email" class="form-control" placeholder="영화 URL">
-                    <h5></h5>
                     <!--                    <input type="text" class="form-control title" id="url" placeholder="영화 URL">-->
-                    <input type="text" class="form-control title" id="formGroupExampleInput" placeholder="제목을 입력하세요">
+                    <input type="text" class="form-control title" id="formGroupExampleInput" placeholder="장소 이름을 입력하세요">
+                    <h5></h5>
+                    <input id="url" type="email" class="form-control" placeholder="주소">
                     <h5></h5>
                     <input class="form-control" type="file" id="upImgFile" onchange="uploadImgPreview();"
                            accept="image/*"/>
                     <h5></h5>
-                    <textarea class="form-control comment" id="desc" rows="3" placeholder="줄거리를 입력하세요"></textarea>
+                    <textarea class="form-control comment" id="desc" rows="3" placeholder="장소에 대한 설명을 입력하세요"></textarea>
                     <h5></h5>
                     <div class="input-group mb-3">
                         <label class="input-group-text" for="inputGroupSelect01">별점</label>
@@ -313,64 +314,6 @@
     </div>
 </section>
 
-
-<!--<div class="mycards">
-    <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">
-        <div class="col" id="card">
-
-                <div class="card h-100">
-                    <img src="https://movie-phinf.pstatic.net/20210728_221/1627440327667GyoYj_JPEG/movie_image.jpg"
-                         class="card-img-top">
-                    <div class="card-body">
-                        <h5 class="card-title">영화 제목이 들어갑니다</h5>
-                        <p class="card-text">여기에 영화에 대한 설명이 들어갑니다.</p>
-                        <p>⭐⭐⭐</p>
-                        <p class="mycomment">나의 한줄 평을 씁니다</p>
-                    </div>
-
-                </div>
-
-
-        </div>
-        <div class="col">
-            <div class="card h-100">
-                <img src="https://movie-phinf.pstatic.net/20210728_221/1627440327667GyoYj_JPEG/movie_image.jpg"
-                     class="card-img-top">
-                <div class="card-body">
-                    <h5 class="card-title">영화 제목이 들어갑니다</h5>
-                    <p class="card-text">여기에 영화에 대한 설명이 들어갑니다.</p>
-                    <p>⭐⭐⭐</p>
-                    <p class="mycomment">나의 한줄 평을 씁니다</p>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card h-100">
-                <img src="https://movie-phinf.pstatic.net/20210728_221/1627440327667GyoYj_JPEG/movie_image.jpg"
-                     class="card-img-top">
-                <div class="card-body">
-                    <h5 class="card-title">영화 제목이 들어갑니다</h5>
-                    <p class="card-text">여기에 영화에 대한 설명이 들어갑니다.</p>
-                    <p>⭐⭐⭐</p>
-                    <p class="mycomment">나의 한줄 평을 씁니다</p>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card h-100">
-                <img src="https://movie-phinf.pstatic.net/20210728_221/1627440327667GyoYj_JPEG/movie_image.jpg"
-                     class="card-img-top">
-                <div class="card-body">
-                    <h5 class="card-title">영화 제목이 들어갑니다</h5>
-                    <p class="card-text">여기에 영화에 대한 설명이 들어갑니다.</p>
-                    <p>⭐⭐⭐</p>
-                    <p class="mycomment">나의 한줄 평을 씁니다</p>
-                </div>
-            </div>
-        </div>
-
-    </div>
-</div>-->
 <div class="mycards">
     <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">
         {% for App in App_list%}
@@ -379,10 +322,12 @@
                 <img src={{ App.img }}
                      class="card-img-top">
                 <div class="card-body">
-                    <h5 class="card-title">{{ App.title }}</h5>
+                    <h5 class="card-title">이름 : {{ App.title }}</h5>
                     <p class="card-text">{{ App.content }}</p>
-                    <p>{{App.star}}</p>
-                    <p class="mycomment">{{ App.desc }}</p>
+                    <p>주소 : {{ App.url }}</p>
+                    <p>평점 : {{App.star}}</p>
+                    <p class="mycomment">리뷰 : {{ App.desc }}</p>
+                    <p>작성시간 : {{App.time}}</p>
                 </div>
             </div>
         </div>

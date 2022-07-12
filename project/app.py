@@ -60,6 +60,7 @@ def web_write_post():
     star_receive = request.form['star_give']
     desc_receive = request.form['desc_give']
     mytime = datetime.now().strftime('%Y-%m-%d %H:%M')
+    url_receive = request.form['url_give']
 
     count = len(list(db.App.find({}, {'_id': False}))) + 1
 
@@ -70,7 +71,8 @@ def web_write_post():
         'comment' : comment_receive,
         'star':'⭐'* int(star_receive),
         'desc':desc_receive,
-        'time': mytime
+        'time': mytime,
+        'url' : url_receive
     }
     db.App.insert_one(doc)
 
@@ -82,7 +84,6 @@ def web_write_get():
     return jsonify({'orders': write_list})
 
 # 이동규님
-
 @app.route('/detail', methods=["GET"])
 def home1():
     num_receive = request.args.get("num_give")
