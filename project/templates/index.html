@@ -20,6 +20,9 @@
     <!--    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">-->
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 
+<!--    <link href="{{ url_for('static', filename='mystyle.css')}}" rel="stylesheet">-->
+
+
 
 
 
@@ -47,6 +50,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+
         }
 
         .mytitle > button {
@@ -87,6 +91,10 @@
             width: 600px;
             max-width: 100vw;
             margin: auto;
+        }
+
+        .banner {
+            cursor: pointer;
         }
 
         .mypost {
@@ -240,12 +248,18 @@
             });
         }
 
+        function logout(){
+            alert('로그아웃!')
+            // $.removeCookie('mytoken');
+            window.location.href='/'
+        }
+
     </script>
 </head>
 
 <body>
 <div class="mytitle">
-    <h1>GADA의 여행일지</h1>
+    <h1 class="banner" onclick="window.location.href='/main'">GADA의 여행일지</h1>
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
         여행지 기록하기
@@ -335,6 +349,37 @@
     </div>
 </div>
 <p id="test"> test용 </p>
+<!--<nav class="navbar is-fixed-top is-white" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="/main">
+            <img src="{{ url_for('static', filename='logo.png') }}">
+            <strong class="is-sparta"
+                    style="font-family: 'Stylish', sans-serif;font-size: larger;">여행 GADA</strong>
+        </a>
+    </div>
+</nav>-->
+<nav class="navbar is-fixed-top navbar-expand-lg bg-light">
+  <div class="container-fluid">
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+      <a class="navbar-brand" href="/main" style="color: black">GADA</a>
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/main" style="color: black">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" style="color: black" onclick="logout()">로그아웃</a>
+        </li>
+          <li class="nav-item disabled">
+          <a class="nav-link disabled" href="#" style="color: black">{{ user_info.profile_name }} 님 안녕하세요</a>
+        </li>
+      </ul>
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
 </body>
 
 </html>

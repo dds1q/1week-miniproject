@@ -21,10 +21,10 @@ SECRET_KEY = 'SPARTA'
 client = MongoClient('mongodb+srv://test:sparta@cluster0.aaaog.mongodb.net/Cluster0?retryWrites=true&w=majority')
 db = client.dbsparta
 
-@app.route('/main')
-def home():
-    App_list = list(db.App.find({}, {'_id': False}))
-    return render_template('index.html', App_list=App_list)
+# @app.route('/main')
+# def home():
+#     App_list = list(db.App.find({}, {'_id': False}))
+#     return render_template('index.html', App_list=App_list)
 
 @app.route("/about/<name>")
 def admin(name):
@@ -36,13 +36,15 @@ def login():
     msg = request.args.get("msg")
     return render_template('login.html', msg=msg)
 
-@app.route("/logintest")
+@app.route("/main")
 def logintest():
+    App_list = list(db.App.find({}, {'_id': False}))
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"username": payload["id"]})
-        return render_template('main.html', user_info=user_info)
+        print(user_info)
+        return render_template('index.html', user_info=user_info, App_list=App_list)
         # index > main으로 변경
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))

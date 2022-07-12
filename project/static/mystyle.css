@@ -1,0 +1,72 @@
+.wrap {
+    background-color: RGBA(232, 52, 78, 0.2);
+    min-height: 100vh;
+    padding-bottom: 50px;
+}
+
+.banner {
+    width: 100%;
+    height: 200px;
+
+    background-color: white;
+    background-image: url('logo_red.png');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+
+    cursor: pointer;
+}
+
+.container {
+    width: 80%;
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: white;
+
+    border: solid 1px gray;
+    border-radius: 10px;
+}
+
+body {
+    background-color: RGBA(232, 52, 78, 0.2);
+    min-height: 100vh;
+		padding-top: 3.25rem;
+}
+
+.section {
+    padding: 1rem 1.5rem;
+    max-width: 750px;
+    margin: auto;
+}
+
+.is-sparta {
+    color: #e8344e !important;
+}
+
+.button.is-sparta {
+    background-color: #e8344e;
+    border-color: transparent;
+    color: #fff !important;
+}
+
+.button.is-sparta.is-outlined {
+    background-color: transparent;
+    border-color: #e8344e;
+    color: #e8344e !important;
+}
+
+.modal-content {
+    width: 600px;
+    max-width: 80%;
+}
+
+input::-webkit-calendar-picker-indicator {
+    display: none;
+}
+
+.image img {
+    object-fit:cover;
+    width:100%;
+    height:100%;
+}
