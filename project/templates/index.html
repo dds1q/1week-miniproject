@@ -5,6 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <!-- Bulma CSS 링크 -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -14,11 +17,20 @@
 
     <title>스파르타 피디아</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+    <!--    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">-->
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+
+
+
+
 
     <style>
-        * {
+        /** {
             font-family: 'Gowun Dodum', sans-serif;
+        }
+*/
+        * {
+            font-family: 'Jua', sans-serif;
         }
 
         .mytitle {
@@ -59,9 +71,18 @@
         }
 
         .mycards {
-            margin: 20px auto 0px auto;
+            /*margin: 20px auto 0px auto;
+
+            max-width: 1200px;*/
             width: 95%;
-            max-width: 1200px;
+            max-width: 1100px;
+            margin: 20px auto 0px auto;
+        }
+
+        .section {
+            width: 600px;
+            max-width: 100vw;
+            margin: auto;
         }
 
         .mypost {
@@ -106,45 +127,50 @@
         }
     </style>
     <script>
+
+
+        //위향훈님
         $(document).ready(function () {
-            listing();
+            show_list()
         });
 
-        function listing() {
+        function show_list() {
             $.ajax({
                 type: 'GET',
-                url: '/travel',
+                url: '/submit',
                 data: {},
                 success: function (response) {
-                    let rows = response['movies']
-
+                    let rows = response['orders']
                     for (let i = 0; i < rows.length; i++) {
-                        title = rows[i]['title']
-                        image = rows[i]['image']
-                        desc = rows[i]['desc']
-                        star = rows[i]['star']
-                        comment = rows[i]['comment']
+                        let title = rows[i]['title']
+                        let imgUrl = rows[i]['img']
+                        let comment = rows[i]['comment']
+                        let star_num = rows[i]['star']
+                        let desc = rows[i]['desc']
+                        let time = rows[i]['time']
 
-                        let star_image = '⭐'.repeat(star)
+                        let star = '⭐'.repeat(star_num)
 
                         let temp_html = `<div class="col">
-                                        <div class="card h-100">
-                                            <img src="${image}"
-                                                 class="card-img-top">
-                                            <div class="card-body">
-                                                <h5 class="card-title">${title}</h5>
-                                                <p class="card-text">${desc}</p>
-                                                <p>${star_image}</p>
-                                                <p class="mycomment">${comment}</p>
+                                            <div class="card h-100">
+                                                <img src="${imgUrl}" class="card-img-top">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">${title}</h5>
+                                                    <p class="card-text">${desc}</p>
+                                                    <p>${star}</p>
+                                                    <p class="mycomment">${comment}</p>
+                                                    <p class="mycomment">${time}</p>
+                                                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>`
-
+                                        `
                         $('#cards-box').append(temp_html)
                     }
                 }
-            })
+            });
         }
+
 
         function posting() {
 
@@ -172,48 +198,42 @@
         }
 
 
-        // 이미지 작업
-        // 이미지 파일 처리하기
-        function loadFile(input) {
-            var file = input.files[0];	//선택된 파일 가져오기
 
-            //미리 만들어 놓은 div에 text(파일 이름) 추가
-            var name = document.getElementById('fileName');
-            name.textContent = file.name;
+        function uploadImgPreview() {
+            // @breif 업로드 파일 읽기
+            let fileInfo = document.getElementById("upImgFile").files[0];
 
-            //새로운 이미지 div 추가
-            var newImage = document.createElement("img");
-            newImage.setAttribute("class", 'img');
-
-            //이미지 source 가져오기
-            newImage.src = URL.createObjectURL(file);
-
-            newImage.style.width = "70%";
-            newImage.style.height = "70%";
-            newImage.style.visibility = "hidden";   //버튼을 누르기 전까지는 이미지를 숨긴다
-            newImage.style.objectFit = "contain";
-
-            //이미지를 image-show div에 추가
-            var container = document.getElementById('image-show');
-            container.appendChild(newImage);
-        };
-
-        // submit 버튼 클릭 시 이미지 보여주기
-        var submit = document.getElementById('submitButton');
-        submit.onclick = showImage;     //Submit 버튼 클릭시 이미지 보여주기
-
-        function showImage() {
-            var newImage = document.getElementById('image-show').lastElementChild;
-
-            //이미지는 화면에 나타나고
-            newImage.style.visibility = "visible";
-
-            //이미지 업로드 버튼은 숨겨진다
-            document.getElementById('image-upload').style.visibility = 'hidden';
-
-            document.getElementById('fileName').textContent = null;     //기존 파일 이름 지우기
+            let reader = new FileReader();
+            // @details readAsDataURL( )을 통해 파일을 읽어 들일때 onload가 실행
+            reader.onload = function () {
+                // @details 파일의 URL을 Base64 형태로 가져온다.
+                // document.getElementById("thumbnailImg").style.background = `url(${reader.result})center/cover`;
+                document.getElementById("thumbnailImg").src = reader.result
+            };
+            // @details readAsDataURL( )을 통해 파일의 URL을 읽어온다.
+            if (fileInfo) {
+                return reader.readAsDataURL(fileInfo);
+            }
         }
 
+        function submit_card() {
+
+            let title = $('.title').val();
+            let imgFlie = document.getElementById("thumbnailImg").src
+            let star = $('#star').val()
+            let desc = $('#desc').val()
+
+            let comment = $('.comment').val();
+            $.ajax({
+                type: 'POST',
+                url: '/submit',
+                data: {title_give: title, img_give: imgFlie, comment_give: comment, star_give: star, desc_give: desc},
+                success: function (response) {
+                    alert(response['msg'])
+                    window.location.reload()
+                }
+            });
+        }
 
     </script>
 </head>
@@ -225,8 +245,10 @@
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
         영화 기록하기
     </button>
+
 </div>
-<!-- Modal -->
+
+<!--위향훈님-->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -235,86 +257,76 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-
-                <!--이미지 파트-->
-                <form method="post" enctype="multipart/form-data">
-                    <div class="button">
-                        <label for="chooseFile">
-                            👉 이미지 업로드! 👈
-                        </label>
-                    </div>
-                    <input type="file" id="chooseFile" name="chooseFile" accept="image/*" onchange="loadFile(this)">
-                </form>
-
-                <div class="form-floating mb-3">
-                    <input id="url" type="email" class="form-control" placeholder="name@example.com">
-                    <label>영화URL</label>
-                </div>
                 <!---->
+                <!--이미지 파트-->
+                <div class="mb-3">
+                    <center>
+                        <img id="thumbnailImg" src="" alt="이미지" width="150" height="150">
+                        <h5></h5>
+                    </center>
+                    <input id="url" type="email" class="form-control" placeholder="영화 URL">
+                    <h5></h5>
+                    <!--                    <input type="text" class="form-control title" id="url" placeholder="영화 URL">-->
+                    <input type="text" class="form-control title" id="formGroupExampleInput" placeholder="제목을 입력하세요">
+                    <h5></h5>
+                    <input class="form-control" type="file" id="upImgFile" onchange="uploadImgPreview();"
+                           accept="image/*"/>
+                    <h5></h5>
+                    <textarea class="form-control comment" id="desc" rows="3" placeholder="줄거리를 입력하세요"></textarea>
+                    <h5></h5>
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="inputGroupSelect01">별점</label>
+                        <select class="form-select" id="star">
+                            <option selected>&#45;&#45; 선택하기 &#45;&#45;</option>
+                            <option value="1">⭐</option>
+                            <option value="2">⭐⭐</option>
+                            <option value="3">⭐⭐⭐</option>
+                            <option value="4">⭐⭐⭐⭐</option>
+                            <option value="5">⭐⭐⭐⭐⭐</option>
+                        </select>
+                    </div>
+                    <h5></h5>
+                    <textarea class="form-control comment" id="exampleFormControlTextarea1" rows="3"
+                              placeholder="후기를 입력하세요"></textarea>
 
-                <div class="input-group mb-3">
-                    <label class="input-group-text" for="inputGroupSelect01">별점</label>
-                    <select class="form-select" id="star">
-                        <option selected>-- 선택하기 --</option>
-                        <option value="1">⭐</option>
-                        <option value="2">⭐⭐</option>
-                        <option value="3">⭐⭐⭐</option>
-                        <option value="4">⭐⭐⭐⭐</option>
-                        <option value="5">⭐⭐⭐⭐⭐</option>
-                    </select>
-                </div>
-                <div class="form-floating">
-                    <textarea id="comment" class="form-control" placeholder="Leave a comment here"></textarea>
-                    <label for="floatingTextarea2">코멘트</label>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                <button type="button" class="btn btn-primary" onclick="posting()">Save changes</button>
+                <button type="button" class="btn btn-primary" id="submit" onclick="submit_card();">등록하기</button>
             </div>
         </div>
     </div>
 </div>
-<!--
-<div class="mypost" id="post-box">
-    <div class="form-floating mb-3">
-        <input id="url" type="email" class="form-control" placeholder="name@example.com">
-        <label>영화URL</label>
+
+<section class="section">
+    <div class="container">
+        <h1 class="title">Section</h1>
+        <h2 class="subtitle">
+            A simple container to divide your page into <strong>sections</strong>, like the one you're
+            currently reading
+        </h2>
     </div>
-    <div class="input-group mb-3">
-        <label class="input-group-text" for="inputGroupSelect01">별점</label>
-        <select class="form-select" id="star">
-            <option selected>&#45;&#45; 선택하기 &#45;&#45;</option>
-            <option value="1">⭐</option>
-            <option value="2">⭐⭐</option>
-            <option value="3">⭐⭐⭐</option>
-            <option value="4">⭐⭐⭐⭐</option>
-            <option value="5">⭐⭐⭐⭐⭐</option>
-        </select>
-    </div>
-    <div class="form-floating">
-        <textarea id="comment" class="form-control" placeholder="Leave a comment here"></textarea>
-        <label for="floatingTextarea2">코멘트</label>
-    </div>
-    <div class="mybtns">
-        <button onclick="close_box()" type="button" class="btn btn-outline-dark">닫기</button>
-        <button onclick="posting()" type="button" class="btn btn-dark">기록하기</button>
-    </div>
-</div>-->
+</section>
+
 
 <div class="mycards">
     <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">
-        <div class="col">
-            <div class="card h-100">
-                <img src="https://movie-phinf.pstatic.net/20210728_221/1627440327667GyoYj_JPEG/movie_image.jpg"
-                     class="card-img-top">
-                <div class="card-body">
-                    <h5 class="card-title">영화 제목이 들어갑니다</h5>
-                    <p class="card-text">여기에 영화에 대한 설명이 들어갑니다.</p>
-                    <p>⭐⭐⭐</p>
-                    <p class="mycomment">나의 한줄 평을 씁니다</p>
+        <div class="col" id="card">
+
+                <div class="card h-100">
+                    <img src="https://movie-phinf.pstatic.net/20210728_221/1627440327667GyoYj_JPEG/movie_image.jpg"
+                         class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">영화 제목이 들어갑니다</h5>
+                        <p class="card-text">여기에 영화에 대한 설명이 들어갑니다.</p>
+                        <p>⭐⭐⭐</p>
+                        <p class="mycomment">나의 한줄 평을 씁니다</p>
+                    </div>
+
                 </div>
-            </div>
+
+
         </div>
         <div class="col">
             <div class="card h-100">
@@ -355,6 +367,7 @@
 
     </div>
 </div>
+<p id="test"> test용 </p>
 </body>
 
 </html>
