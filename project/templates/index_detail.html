@@ -23,20 +23,13 @@
             margin: 20px auto 0 auto;
         }
 
-<<<<<<< HEAD
-=======
         /*이미지공간*/
->>>>>>> d5292e28a409c9cb42f40a08c72a5b76ad2cd45a
         .image {
             max-width: 800px;
             margin: 20px auto;
-
         }
 
-<<<<<<< HEAD
-=======
         /*제목 내용 등 콘텐츠 */
->>>>>>> d5292e28a409c9cb42f40a08c72a5b76ad2cd45a
         .content {
             max-width: 800px;
             width: 95%;
@@ -55,21 +48,12 @@
             margin-bottom: 50px;
         }
 
-<<<<<<< HEAD
-=======
         /*댓글*/
->>>>>>> d5292e28a409c9cb42f40a08c72a5b76ad2cd45a
         .comment {
             width: 95%;
             max-width: 800px;
             box-shadow: 0px 0px 10px 0px lightgray;
             margin: 20px auto;
-<<<<<<< HEAD
-        }
-
-        .mybtns > button {
-            margin-top: 10px;
-=======
         }
 
         /*제출하기 버튼*/
@@ -90,71 +74,28 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
->>>>>>> d5292e28a409c9cb42f40a08c72a5b76ad2cd45a
         }
 
 
     </style>
     <script>
         $(document).ready(function () {
-<<<<<<< HEAD
-            //show_comment()
-        });
-
-        // 닉네임과 코멘트를 작성 후 comments 테이블에 저장
-        function save_comment() {
-=======
         });
 
         // 닉네임과 코멘트를 작성 후 comments 테이블에 저장
         function save_comment( num ) {
->>>>>>> d5292e28a409c9cb42f40a08c72a5b76ad2cd45a
             let nickname = $('#name').val()
             let comment = $('#comment').val()
             $.ajax({
                 type: 'POST',
                 url: '/save-comment',
-<<<<<<< HEAD
-                data: {nickname_give: nickname, comment_give: comment , num_give : num },
-=======
                 data: { nickname_give: nickname, comment_give: comment , num_give : num },
->>>>>>> d5292e28a409c9cb42f40a08c72a5b76ad2cd45a
                 success: function (response) {
                     alert(response['msg'])
                     window.location.reload()
                 }
             })
         }
-<<<<<<< HEAD
-
-        // 게시글에 달린 코멘트들을 요청한다.
-        // function show_comment() {
-        //     $.ajax({
-        //         type: "GET",
-        //         url: "/all-comment",
-        //         data: {},
-        //         success: function (response) {
-        //             let rows = response['comment_list']
-        //             for (let i = 0; i < rows.length; i++) {
-        //                 let nickname = rows[i]['nickname']
-        //                 let comment = rows[i]['comment']
-        //
-        //                 let temp_html = `<div class="comment">
-        //                                     <div class="card-body">
-        //                                         <blockquote class="blockquote mb-0">
-        //                                             <p>${comment}</p>
-        //                                             <footer class="blockquote-footer">${nickname}</cite>
-        //                                             </footer>
-        //                                         </blockquote>
-        //                                     </div>
-        //                                 </div>`
-        //                 $('#comment-list').append(temp_html)
-        //             }
-        //         }
-        //     });
-        // }
-=======
->>>>>>> d5292e28a409c9cb42f40a08c72a5b76ad2cd45a
     </script>
 </head>
 
@@ -169,69 +110,38 @@
         <!--            풍경사진 보여지는 공간-->
         <div class="col-md-6">
             <div class="image">
-<<<<<<< HEAD
-                <img src="https://cdn.pixabay.com/photo/2015/03/12/04/43/landscape-669619_960_720.jpg"
-                     class="img-thumbnail"
-                     style="border-radius: 20px;">
-=======
                 <img src="{{ board.img }}"
                      class="img-fluid" style="border-radius: 20px; width: 100%" />
->>>>>>> d5292e28a409c9cb42f40a08c72a5b76ad2cd45a
             </div>
         </div>
         <!--            콘텐츠 보여지는 공간-->
         <div class="col-md-6">
             <div class="content">
-<<<<<<< HEAD
-                <h3>제목 : 좋은 곳</h3>
-                <h4>장소 : 서울시 어딘가</h4>
-                <h4>평점 : ⭐⭐⭐⭐</h4>
-                <h5>리뷰 : Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                    labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                    nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
-                    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                    culpa qui officia deserunt mollit anim id est laborum.
-
-                </h5>
-=======
                 <h3>제목 : {{ board.title }}</h3>
                 <h4>장소 : {{ board.desc }}</h4>
                 <h4>평점 : {{ board.star }}</h4>
                 <h5>리뷰 : {{ board.comment }}</h5>
->>>>>>> d5292e28a409c9cb42f40a08c72a5b76ad2cd45a
             </div>
         </div>
     </div>
     <div class="row">
         <div class="comment-box">
-<<<<<<< HEAD
-=======
 <!--            닉네임 입력-->
->>>>>>> d5292e28a409c9cb42f40a08c72a5b76ad2cd45a
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="name" placeholder="닉네임">
                 <label for="name">닉네임</label>
             </div>
-<<<<<<< HEAD
-=======
 <!--            코멘트 입력-->
->>>>>>> d5292e28a409c9cb42f40a08c72a5b76ad2cd45a
             <div class="form-floating">
                 <textarea class="form-control" placeholder="Leave a comment here" id="comment"
                           style="height: 100px"></textarea>
                 <label for="comment">코멘트 입력</label>
             </div>
             <div class="mybtns">
-<<<<<<< HEAD
-                <button onclick="save_comment()" type="button" class="btn btn-dark">기록하기</button>
-            </div>
-            <div class="cards" id="comment-list">
-=======
                 <button onclick="save_comment( '{{ board.num }}' )" type="button" class="btn btn-dark">기록하기</button>
             </div>
             <div class="cards" id="comment-list">
 <!--                코멘트들 나열됨-->
->>>>>>> d5292e28a409c9cb42f40a08c72a5b76ad2cd45a
                 {% for x in comment_list %}
                 <div class="comment">
                     <div class="card-body">
