@@ -290,22 +290,12 @@
         }*/
 
         function findTitle() {
-            alert('httpasdfasfd')
             let search = $('#searchTitle').val()
             if (search == '') {
                 alert('내용을 입력해주세요')
                 return
             }
-            window.location.href=`/main/search_give=${search}`
-            if ('{{ msg }}' != null) {
-                alert('{{ msg }}');
-                return;
-            }
-
-            $('#cards-box').empty()
-
-
-
+            window.location.href=`/search?search_give=${search}`
         }
 
         function toggle_like(num) {
@@ -485,7 +475,7 @@
             </div>
             <!-- 글목록 부분 -->
         </section>
-<p id="test"> test용 </p>
+<p> </p>
 <!--<nav class="navbar is-fixed-top is-white" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
         <a class="navbar-item" href="/main">
