@@ -31,7 +31,8 @@
             width: 95%;
             margin: 20px auto 0 auto;
         }
-        .col-md-6{
+
+        .col-md-6 {
 
         }
 
@@ -103,6 +104,7 @@
             line-height: 25px;
             color: crimson;
         }
+
         .mytitle > div > button {
             width: 200px;
             height: 50px;
@@ -127,11 +129,11 @@
 
     </style>
     <script>
-        $(window).bind("pageshow",function (event){
-            if( event.originalEvent.persisted || (window.performance && window.performance.navigation.type == 2)){
+        $(window).bind("pageshow", function (event) {
+            if (event.originalEvent.persisted || (window.performance && window.performance.navigation.type == 2)) {
                 console.log("BFCahe로부터 복원됨");
                 location.reload();
-            } else{
+            } else {
                 console.log("새로열린 페이지")
             }
         })
@@ -141,12 +143,11 @@
 
         // 닉네임과 코멘트를 작성 후 comments 테이블에 저장
         function save_comment(num) {
-            let nickname = $('#name').val()
             let comment = $('#comment').val()
             $.ajax({
                 type: 'POST',
                 url: '/save-comment',
-                data: {nickname_give: nickname, comment_give: comment, num_give: num},
+                data: {comment_give: comment, num_give: num},
                 success: function (response) {
                     alert(response['msg'])
                     window.location.reload()
@@ -167,7 +168,7 @@
             console.log(num)
             let $i_like = $('#heart').find("i")
 
-            if ( $i_like.hasClass("bi-heart-fill")) {
+            if ($i_like.hasClass("bi-heart-fill")) {
                 $.ajax({
                     type: "POST",
                     url: "/update_like",
@@ -199,43 +200,80 @@
             }
         }
 
+        function delete_post(num) {
+            if (confirm("정말 삭제하시겠습니까??") == true) {    //확인
+                $.ajax({
+                    type: 'POST',
+                    url: '/delete_post',
+                    data: {num_give: num},
+                    success: function (response) {
+                        alert(response['msg'])
+                        window.location.href = '/main'
+                    }
+                })
+
+            } else {   //취소
+                return false;
+            }
+
+
+        }
+
+        function delete_comment(id) {
+            console.log(id)
+            if (confirm("정말 삭제하시겠습니까??") == true) {    //확인
+                $.ajax({
+                    type: 'POST',
+                    url: '/delete_comment',
+                    data: {id_give: id},
+                    success: function (response) {
+                        alert(response['msg'])
+                        window.location.reload()
+                    }
+                })
+
+            } else {   //취소
+                return false;
+            }
+        }
+
     </script>
 </head>
 
 <body>
 <nav class="navbar is-fixed-top navbar-expand-lg bg-light">
-  <div class="container-fluid">
-      <div class="navbar-brand">
-        <a class="navbar-item" href="/main">
-            <img src="../static/logo.png" width="70" height="27">
-        </a>
-    </div>
-    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link logout" style="color: black" onclick="sign_out()">로그아웃</a>
-        </li>
-          <li class="nav-item disabled">
-          <a class="nav-link disabled" href="#" style="color: black">{{ user_info.profile_name }} 님 안녕하세요</a>
-        </li>
-      </ul>
+    <div class="container-fluid">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="/main">
+                <img src="../static/logo.png" width="70" height="27">
+            </a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link logout" style="color: black" onclick="sign_out()">로그아웃</a>
+                </li>
+                <li class="nav-item disabled">
+                    <a class="nav-link disabled" href="#" style="color: black">{{ user_info.profile_name }} 님 안녕하세요</a>
+                </li>
+            </ul>
 
-        <!--<form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchTitle">
-      </form>
-        <button onclick="findTitle()" class="btn btn-outline-success" type="submit">Search</button>-->
+            <!--<form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchTitle">
+          </form>
+            <button onclick="findTitle()" class="btn btn-outline-success" type="submit">Search</button>-->
+        </div>
     </div>
-  </div>
 </nav>
 <div class="mytitle">
-     <h1>GADA의 여행일지</h1>
-            <!-- Button trigger modal -->
-            <h3>[ {{ user_info.username }} ]님 환영합니다!</h3>
-            <div class="btn_box">
-                <button type="button" class="btn btn-primary" onclick="sign_out()">
-                    로그아웃
-                </button>
-            </div>
+    <h1>GADA의 여행일지</h1>
+    <!-- Button trigger modal -->
+    <h3>[ {{ user_info.username }} ]님 환영합니다!</h3>
+    <div class="btn_box">
+        <button type="button" class="btn btn-primary" onclick="sign_out()">
+            로그아웃
+        </button>
+    </div>
     <!-- Button trigger modal -->
 
 </div>
@@ -255,14 +293,20 @@
                 <h4>작성자 : {{ board.username }}</h4>
                 <h4>장소 : {{ board.address }}</h4>
                 <h4>평점 : {{ board.star }}</h4>
-                <a id="heart"  onclick="toggle_like('{{board.num}}')">
+                <a id="heart" onclick="toggle_like('{{ board.num }}')">
                     {% if chkLike == true %}
-                    <i class="bi bi-heart-fill" aria-hidden="true"></i>
+                        <i class="bi bi-heart-fill" aria-hidden="true"></i>
                     {% else %}
-                    <i class="bi bi-heart" aria-hidden="true"></i>
+                        <i class="bi bi-heart" aria-hidden="true"></i>
                     {% endif %}
                     <span style="font-size: 17pt; font-weight: bold">{{ like_count }}</span>
                 </a>
+                <div style="margin: 10px">
+                    {% if board.username == user_info.username %}
+                        <button type="button" class="btn btn-danger" onclick="delete_post('{{ board.num }}')">삭제
+                        </button>
+                    {% endif %}
+                </div>
                 <h5>리뷰 : {{ board.comment }}</h5>
             </div>
         </div>
@@ -281,16 +325,23 @@
             <div class="cards" id="comment-list">
                 <!--                코멘트들 나열됨-->
                 {% for x in comment_list %}
-                <div class="comment">
-                    <div class="card-body">
-                        <blockquote class="blockquote mb-0">
-                            <p>{{ x.comment }}</p>
-                            <footer class="blockquote-footer">{{ x.username }}
-                                <span style="font-size: 15px;">  {{x.time}}</span></cite>
-                            </footer>
-                        </blockquote>
+                    <div class="comment">
+                        <div class="card-body">
+                            <blockquote class="blockquote mb-0">
+                                <p>{{ x.comment }}</p>
+                                <footer class="blockquote-footer">{{ x.username }}
+                                    <span style="font-size: 15px;">  {{ x.time }}</span></cite>
+                                    {% if x.username == user_info.username %}
+                                        <button style="float: right" type="button" class="btn btn-danger"
+                                                onclick="delete_comment( '{{ x._id }}' )">
+                                            삭제
+                                        </button>
+                                    {% endif %}
+                                </footer>
+
+                            </blockquote>
+                        </div>
                     </div>
-                </div>
                 {% endfor %}
             </div>
         </div>
