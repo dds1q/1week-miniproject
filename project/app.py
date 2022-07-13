@@ -24,7 +24,7 @@ SECRET_KEY = 'SPARTA'
 def home():
     token_receive = request.cookies.get('mytoken')
     try:
-        App_list = list(db.App.find({}, {'_id': False}))
+        App_list = list(db.App.find({}, {'_id': False}).sort("time", -1))
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"username": payload["id"]})
 
@@ -163,7 +163,7 @@ def detail():
         user_info = db.users.find_one({"username": payload["id"]})
         num_receive = int(request.args.get("num_give"))
         board = db.App.find_one({'num': num_receive})
-        comment_list = list(db.comments.find({'num': num_receive}, {'_id': False}))
+        comment_list = list(db.comments.find({'num': num_receive}, {'_id': False}).sort("time",-1))
 
         like_count = db.likes.count_documents({"num": num_receive})
         chkLike = bool(db.likes.find_one({"num": num_receive, "username": user_info["username"]}))
@@ -204,7 +204,7 @@ def comment_get():
 def go_like_list():
     token_receive = request.cookies.get('mytoken')
     try:
-        App_list = list(db.App.find({}, {'_id': False}))
+        App_list = list(db.App.find({}, {'_id': False}).sort("time",-1))
         App_like_list = []
 
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
