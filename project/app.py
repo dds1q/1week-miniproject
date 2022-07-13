@@ -26,6 +26,20 @@ db = client.dbsparta
 #     App_list = list(db.App.find({}, {'_id': False}))
 #     return render_template('index.html', App_list=App_list)
 
+@app.route('/main')
+def home():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        App_list = list(db.App.find({}, {'_id': False}))
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"username": payload["id"]})
+        return render_template('index.html', user_info=user_info , App_list=App_list)
+        # index > main으로 변경
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+
 @app.route("/about/<name>")
 def admin(name):
    return 'About %s' %name
@@ -136,31 +150,64 @@ def get_message(user_id):
 #     return jsonify({'msg': '등록완료'})
 
 # 포스트작성
+# @app.route("/submit", methods=["POST"])
+# def web_write_post():
+#     title_receive = request.form['title_give']
+#     img_receive = request.form['img_give']
+#     comment_receive = request.form['comment_give']
+#     star_receive = request.form['star_give']
+#     desc_receive = request.form['desc_give']
+#     mytime = datetime.now().strftime('%Y-%m-%d %H:%M')
+#     url_receive = request.form['url_give']
+#
+#     count = len(list(db.App.find({}, {'_id': False}))) + 1
+#
+#     doc = {
+#         'num' : count,
+#         'title' : title_receive,
+#         'img' : img_receive,
+#         'comment' : comment_receive,
+#         'star':'⭐'* int(star_receive),
+#         'desc':desc_receive,
+#         'time': mytime,
+#         'url' : url_receive
+#     }
+#     db.App.insert_one(doc)
+#
+#     return jsonify({'msg': '등록완료'})
+
 @app.route("/submit", methods=["POST"])
 def web_write_post():
-    title_receive = request.form['title_give']
-    img_receive = request.form['img_give']
-    comment_receive = request.form['comment_give']
-    star_receive = request.form['star_give']
-    desc_receive = request.form['desc_give']
-    mytime = datetime.now().strftime('%Y-%m-%d %H:%M')
-    url_receive = request.form['url_give']
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"username": payload["id"]})
+        title_receive = request.form['title_give']
+        img_receive = request.form['img_give']
+        comment_receive = request.form['comment_give']
+        star_receive = request.form['star_give']
+        address_receive = request.form['address_give']
+        mytime = datetime.now().strftime('%Y-%m-%d %H:%M')
 
-    count = len(list(db.App.find({}, {'_id': False}))) + 1
+        count = len(list(db.App.find({}, {'_id': False}))) + 1
 
-    doc = {
-        'num' : count,
-        'title' : title_receive,
-        'img' : img_receive,
-        'comment' : comment_receive,
-        'star':'⭐'* int(star_receive),
-        'desc':desc_receive,
-        'time': mytime,
-        'url' : url_receive
-    }
-    db.App.insert_one(doc)
+        doc = {
+            'num': count,
+            "username": user_info["username"],
+            'title': title_receive,
+            'img': img_receive,
+            'comment': comment_receive,
+            'star': '⭐' * int(star_receive),
+            'address': address_receive,
+            'time': mytime
+        }
+        db.App.insert_one(doc)
+        return jsonify({'msg': '등록완료'})
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
-    return jsonify({'msg': '등록완료'})
 
 @app.route("/submit", methods=["GET"])
 def web_write_get():
