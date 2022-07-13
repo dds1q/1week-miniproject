@@ -173,7 +173,6 @@ def web_write_get():
     write_list = list(db.App.find({}, {'_id': False}))
     return jsonify({'orders': write_list})
 
-
 @app.route('/detail')
 def home1():
     token_receive = request.cookies.get('mytoken')
