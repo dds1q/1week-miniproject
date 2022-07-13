@@ -92,15 +92,12 @@
             margin: 20px auto 0px auto;
         }
 
-        /*.card {
-            box-shadow: 5px 5px 3px 3px grey;
-        }*/
 
-       /* .section {
+        .section {
             width: 600px;
             max-width: 100%;
             margin: auto;
-        }*/
+        }
 
         .banner {
             cursor: pointer;
@@ -295,9 +292,6 @@
             }
 
             $('#cards-box').empty()
-
-
-
         }
 
         function toggle_like(num) {
@@ -412,10 +406,9 @@
 
 <section class="section">
     <div class="container">
-        <h1 class="title">Section</h1>
+        <h1 class="title">Travel</h1>
         <h2 class="subtitle">
-            A simple container to divide your page into <strong>sections</strong>, like the one you're
-            currently reading
+            A man travels the world over in search of , what he needs and returns home to find it. - <strong>George A. Moore</strong>
         </h2>
     </div>
 </section>
@@ -440,7 +433,7 @@
         {% endfor %}
     </div>
 </div>-->
-<section class="section">
+<section>
             <!-- 글목록 부분 -->
             <div class="mycards">
                 <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">
@@ -477,7 +470,6 @@
             </div>
             <!-- 글목록 부분 -->
         </section>
-<p id="test"> test용 </p>
 <!--<nav class="navbar is-fixed-top is-white" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
         <a class="navbar-item" href="/main">
@@ -503,18 +495,8 @@
         </li>
       </ul>
 
-      <!--<form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchTitle">
-        <button onclick="findTitle()" class="btn btn-outline-success" type="submit">Search</button>
-      </form>-->
-        <!--<form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchTitle">
-            <button onclick="findTitle()">gdgd</button>
-        <button onclick="findTitle()" class="btn btn-outline-success" type="submit">Search</button>
-      </form>-->
         <form class="d-flex" role="search">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchTitle">
-<!--            <button onclick="findTitle()" class="btn btn-outline-success" type="submit">Search</button>-->
       </form>
         <button onclick="findTitle()" class="btn btn-outline-success" type="submit">Search</button>
     </div>
@@ -525,6 +507,7 @@
                  style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1" onclick="closeDaumPostcode()"
                  alt="닫기 버튼">
         </div>
+<p></p>
 </body>
 
     <script>

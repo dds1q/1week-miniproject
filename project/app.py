@@ -43,6 +43,9 @@ def home():
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
 
+
+
+
 @app.route("/about/<name>")
 def admin(name):
     return 'About %s' % name
@@ -57,7 +60,7 @@ def login():
 @app.route("/main/<search_receive>")
 def search(search_receive):
     print(search_receive)
-    search_info = db.users.find_one({"title": search_receive})
+    search_info = db.App.find_one({"title": search_receive})
     print(search_info)
     if search_info is None:
         return render_template('/index.html', msg='내용을 찾을 수 없습니다')
