@@ -254,17 +254,17 @@
             });
         }*/
 
-        function logout(){
+        /*function logout(){
 
             $.removeCookie('mytoken', {path: '/'});
             alert('로그아웃!')
             window.location.href='/'
 
-            /*function sign_out() {
+            /!*function sign_out() {
                 $.removeCookie('mytoken', {path: '/'});
                 alert('로그아웃!')
-            }*/
-        }
+            }*!/
+        }*/
 
         function findTitle() {
             alert('httpasdfasfd')
@@ -433,7 +433,7 @@
           <a class="nav-link active" aria-current="page" href="/main" style="color: black">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" style="color: black" onclick="logout()">로그아웃</a>
+          <a class="nav-link" style="color: black" onclick="sign_out()">로그아웃</a>
         </li>
           <li class="nav-item disabled">
           <a class="nav-link disabled" href="#" style="color: black">{{ user_info.profile_name }} 님 안녕하세요</a>
