@@ -27,7 +27,11 @@ def home():
         App_list = list(db.App.find({}, {'_id': False}))
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"username": payload["id"]})
-        return render_template('index.html', user_info=user_info , App_list=App_list)
+        for App in App_list :
+            App["like_count"] = db.likes.count_documents({"num": App['num']})
+            App["chkLike"] = bool(db.likes.find_one({"num": App['num'],
+                                                          "username": user_info["username"]}))
+        return render_template('index.html', user_info=user_info , App_list=App_list )
         # index > main으로 변경
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
@@ -116,7 +120,7 @@ def home1():
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"username": payload["id"]})
         num_receive = int(request.args.get("num_give"))
-        board = db.App.find_one({'num': num_receive})
+        board = db.App.find_one({'num': num_receive })
         comment_list = list(db.comments.find({'num': num_receive}, {'_id': False}))
 
         like_count = db.likes.count_documents({"num": num_receive})
@@ -132,11 +136,13 @@ def home1():
 
 @app.route("/save-comment", methods=["POST"])
 def comment_post():
-    nickname_receive = request.form['nickname_give']
+    token_receive = request.cookies.get('mytoken')
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    user_info = db.users.find_one({"username": payload["id"]})
     comment_receive = request.form['comment_give']
     num_receive = request.form['num_give']
     doc = {
-        'nickname':nickname_receive,
+        'username':user_info["username"],
         'comment': comment_receive,
         'num':int(num_receive)
     }
@@ -159,6 +165,7 @@ def web_write_post():
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"username": payload["id"]})
         title_receive = request.form['title_give']
+        url_receive = request.form['url_give']
         img_receive = request.form['img_give']
         comment_receive = request.form['comment_give']
         star_receive = request.form['star_give']
@@ -172,6 +179,7 @@ def web_write_post():
             "username": user_info["username"],
             'title': title_receive,
             'img': img_receive,
+            'replace':url_receive,
             'comment': comment_receive,
             'star': '⭐' * int(star_receive),
             'desc': desc_receive,
@@ -183,8 +191,6 @@ def web_write_post():
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
-
-
 
 
 @app.route("/submit", methods=["GET"])
@@ -210,14 +216,11 @@ def update_like():
             db.likes.delete_one(doc)
         # action 이후 좋아요 개수를 구한다
         count = db.likes.count_documents({"num": num_receive})
-
         return jsonify({"result": "success", 'msg': 'updated', "count": count})
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
-
-
 
 
 if __name__ == '__main__':

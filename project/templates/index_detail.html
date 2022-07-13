@@ -24,11 +24,16 @@
             width: 95%;
             margin: 20px auto 0 auto;
         }
+        .col-md-6{
+
+        }
 
         /*이미지공간*/
         .image {
             max-width: 800px;
             margin: 20px auto;
+            box-shadow: 5px 5px 3px 3px grey;
+            background-color: transparent;
         }
 
         /*제목 내용 등 콘텐츠 */
@@ -114,41 +119,41 @@
         }
 
         // 좋아요 버튼을 누를 시 등록 또는 취소되는 함수
-        function toggle_like(num) {
-            console.log(num)
-            let $i_like = $('#heart').find("i")
-
-            if ( $i_like.hasClass("bi-heart-fill")) {
-                $.ajax({
-                    type: "POST",
-                    url: "/update_like",
-                    data: {
-                        num_give: num,
-                        action_give: "unlike"
-                    },
-                    success: function (response) {
-                        console.log("unlike")
-                        $i_like.addClass("bi-heart").removeClass("bi-heart-fill")
-                        $('#heart span').text(response["count"])
-                    }
-                })
-            } else {
-                $.ajax({
-                    type: "POST",
-                    url: "/update_like",
-                    data: {
-                        num_give: num,
-                        action_give: "like"
-                    },
-                    success: function (response) {
-                        console.log("like")
-                        $i_like.addClass("bi-heart-fill").removeClass("bi-heart")
-                        $('#heart span').text(response["count"])
-                    }
-                })
-
-            }
-        }
+        // function toggle_like(num) {
+        //     console.log(num)
+        //     let $i_like = $('#heart').find("i")
+        //
+        //     if ( $i_like.hasClass("bi-heart-fill")) {
+        //         $.ajax({
+        //             type: "POST",
+        //             url: "/update_like",
+        //             data: {
+        //                 num_give: num,
+        //                 action_give: "unlike"
+        //             },
+        //             success: function (response) {
+        //                 console.log("unlike")
+        //                 $i_like.addClass("bi-heart").removeClass("bi-heart-fill")
+        //                 $('#heart span').text(response["count"])
+        //             }
+        //         })
+        //     } else {
+        //         $.ajax({
+        //             type: "POST",
+        //             url: "/update_like",
+        //             data: {
+        //                 num_give: num,
+        //                 action_give: "like"
+        //             },
+        //             success: function (response) {
+        //                 console.log("like")
+        //                 $i_like.addClass("bi-heart-fill").removeClass("bi-heart")
+        //                 $('#heart span').text(response["count"])
+        //             }
+        //         })
+        //
+        //     }
+        // }
     </script>
 </head>
 
@@ -164,7 +169,7 @@
         <div class="col-md-6">
             <div class="image">
                 <img src="{{ board.img }}"
-                     class="img-fluid" style="border-radius: 20px; width: 100%"/>
+                     class="img-fluid" style="width: 100%"/>
             </div>
         </div>
         <!--            콘텐츠 보여지는 공간-->
@@ -172,8 +177,9 @@
             <div class="content">
                 <h3>제목 : {{ board.title }}</h3>
                 <h4>작성자 : {{ board.username }}</h4>
-                <h4>장소 : {{ board.desc }}</h4>
+                <h4>장소 : {{ board.replace }}</h4>
                 <h4>평점 : {{ board.star }}</h4>
+                <h4>소개 : {{ board.desc }}</h4>
                 <a id="heart"  onclick="toggle_like('{{board.num}}')">
                     {% if chkLike == true %}
                     <i class="bi bi-heart-fill" aria-hidden="true"></i>
@@ -188,11 +194,6 @@
     </div>
     <div class="row">
         <div class="comment-box">
-            <!--            닉네임 입력-->
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="name" placeholder="닉네임">
-                <label for="name">닉네임</label>
-            </div>
             <!--            코멘트 입력-->
             <div class="form-floating">
                 <textarea class="form-control" placeholder="Leave a comment here" id="comment"
@@ -209,7 +210,7 @@
                     <div class="card-body">
                         <blockquote class="blockquote mb-0">
                             <p>{{ x.comment }}</p>
-                            <footer class="blockquote-footer">{{ x.nickname }}</cite>
+                            <footer class="blockquote-footer">{{ x.username }}</cite>
                             </footer>
                         </blockquote>
                     </div>
