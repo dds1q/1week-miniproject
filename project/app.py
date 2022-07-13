@@ -57,15 +57,32 @@ def login():
     return render_template('login.html', msg=msg)
 
 
-@app.route("/main/<search_receive>")
-def search(search_receive):
-    print(search_receive)
-    search_info = db.App.find_one({"title": search_receive})
+@app.route("/search")
+def search():
+    search_target = request.args.get("search_give")
+    search_info = db.App.find_one({"title": search_target})
+    token_receive = request.cookies.get('mytoken')
+    print(search_target)
     print(search_info)
     if search_info is None:
-        return render_template('/index.html', msg='내용을 찾을 수 없습니다')
-    else:
-        return render_template('/index.html', search_info=search_info, msg=None)
+        return jsonify({'msg' : '데이터가 없습니다'})
+
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"username": payload["id"]})
+        print(user_info)
+        return render_template('/searchResult.html', search_info=search_info, user_info=user_info)
+        # index > main으로 변경
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+
+
+    # if search_info is None:
+    #     return jsonify({'msg' : '데이터가 없습니다'})
+    # else:
+
 
 
 @app.route("/main")
