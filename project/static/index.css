@@ -56,3 +56,18 @@
     height: 170px;
     object-fit: cover;
 }
+
+.veiw_btn {
+    background-color: #42A8CF;
+    border: #42A8CF;
+    color:#fff;
+}
+
+.icon_box {
+    display: flex;
+    justify-content: space-between;
+}
+
+.icon_box  > a > i,span {
+    vertical-align: middle;
+}

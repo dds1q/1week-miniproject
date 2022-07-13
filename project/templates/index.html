@@ -342,7 +342,7 @@
                             </center>
                             <input type="text" class="form-control title" id="formGroupExampleInput" placeholder="장소 이름을 입력하세요">
                             <div class="input-group mb-3">
-                              <button onclick="execDaumPostcode()" class="btn btn-outline-secondary" type="button" id="button-addon1">주소 찾기</button>
+                              <button onclick="execDaumPostcode()" class="btn btn-secondary" type="button" id="button-addon1">주소 찾기</button>
                               <input id="sample2_address" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
                             </div>
                             <input class="form-control mb-3" type="file" id="upImgFile" onchange="uploadImgPreview();"
@@ -363,7 +363,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                        <button type="button" class="btn btn-primary" id="submit" onclick="submit_card();">등록하기</button>
+                        <button type="button" class="btn btn-primary veiw_btn" id="submit" onclick="submit_card();">등록하기</button>
                     </div>
                 </div>
             </div>
@@ -416,8 +416,8 @@
                                 <p>평점 : {{App.star}}</p>
                                 <p class="mycomment">리뷰 : {{ App.comment }}</p>
                                 <p>작성시간 : {{App.time}}</p>
-                                <div style="justify-content : space-evenly; display: flex">
-                                    <a href="#" class="btn btn-primary"
+                                <div class="icon_box">
+                                    <a href="#" class="btn btn-primary veiw_btn"
                                        onclick="window.location.href='/detail?num_give={{ App.num }}'">자세히 보기</a>
                                     <a id="heart{{App.num}}" onclick="toggle_like('{{ App.num }}')">
                                         {% if App.chkLike == true %}
