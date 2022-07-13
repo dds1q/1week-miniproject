@@ -123,6 +123,14 @@
 
     </style>
     <script>
+        $(window).bind("pageshow",function (event){
+            if( event.originalEvent.persisted || (window.performance && window.performance.navigation.type == 2)){
+                console.log("BFCahe로부터 복원됨");
+                location.reload();
+            } else{
+                console.log("새로열린 페이지")
+            }
+        })
         $(document).ready(function () {
 
         });
@@ -148,6 +156,43 @@
             alert('로그아웃!')
 
             window.location.href = '/'
+        }
+
+        // 좋아요 버튼을 누를 시 등록 또는 취소되는 함수
+        function toggle_like(num) {
+            console.log(num)
+            let $i_like = $('#heart').find("i")
+
+            if ( $i_like.hasClass("bi-heart-fill")) {
+                $.ajax({
+                    type: "POST",
+                    url: "/update_like",
+                    data: {
+                        num_give: num,
+                        action_give: "unlike"
+                    },
+                    success: function (response) {
+                        console.log("unlike")
+                        $i_like.addClass("bi-heart").removeClass("bi-heart-fill")
+                        $('#heart span').text(response["count"])
+                    }
+                })
+            } else {
+                $.ajax({
+                    type: "POST",
+                    url: "/update_like",
+                    data: {
+                        num_give: num,
+                        action_give: "like"
+                    },
+                    success: function (response) {
+                        console.log("like")
+                        $i_like.addClass("bi-heart-fill").removeClass("bi-heart")
+                        $('#heart span').text(response["count"])
+                    }
+                })
+
+            }
         }
 
     </script>
@@ -245,7 +290,8 @@
                     <div class="card-body">
                         <blockquote class="blockquote mb-0">
                             <p>{{ x.comment }}</p>
-                            <footer class="blockquote-footer">{{ x.username }}</cite>
+                            <footer class="blockquote-footer">{{ x.username }}
+                                <span style="font-size: 15px;">  {{x.time}}</span></cite>
                             </footer>
                         </blockquote>
                     </div>

@@ -92,12 +92,15 @@
             margin: 20px auto 0px auto;
         }
 
+        /*.card {
+            box-shadow: 5px 5px 3px 3px grey;
+        }*/
 
-        .section {
+       /* .section {
             width: 600px;
             max-width: 100%;
             margin: auto;
-        }
+        }*/
 
         .banner {
             cursor: pointer;
@@ -157,7 +160,6 @@
         }
     </style>
     <script>
-
         $(window).bind("pageshow",function (event){
             if( event.originalEvent.persisted || (window.performance && window.performance.navigation.type == 2)){
                 console.log("BFCahe로부터 복원됨");
@@ -166,6 +168,50 @@
                 console.log("새로열린 페이지")
             }
         })
+
+
+        //위향훈님
+        $(document).ready(function () {
+            // show_list()
+        });
+
+        /*function show_list() {
+            $.ajax({
+                type: 'GET',
+                url: '/submit',
+                data: {},
+                success: function (response) {
+                    let rows = response['orders']
+                    for (let i = 0; i < rows.length; i++) {
+                        let title = rows[i]['title']
+                        let imgUrl = rows[i]['img']
+                        let comment = rows[i]['comment']
+                        let star_num = rows[i]['star']
+                        let desc = rows[i]['desc']
+                        let time = rows[i]['time']
+
+                        let star = '⭐'.repeat(star_num)
+
+                        let temp_html = `<div class="col">
+                                            <div class="card h-100">
+                                                <img src="${imgUrl}" class="card-img-top">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">${title}</h5>
+                                                    <p class="card-text">${desc}</p>
+                                                    <p>${star}</p>
+                                                    <p class="mycomment">${comment}</p>
+                                                    <p class="mycomment">${time}</p>
+                                                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        `
+                        $('#cards-box').append(temp_html)
+                    }
+                }
+            });
+        }*/
+
 
         function posting() {
 
@@ -257,6 +303,9 @@
             }
 
             $('#cards-box').empty()
+
+
+
         }
 
         function toggle_like(num) {
@@ -374,9 +423,10 @@
 
 <section class="section">
     <div class="container">
-        <h1 class="title">Travel</h1>
+        <h1 class="title">Section</h1>
         <h2 class="subtitle">
-            A man travels the world over in search of , what he needs and returns home to find it. - <strong>George A. Moore</strong>
+            A simple container to divide your page into <strong>sections</strong>, like the one you're
+            currently reading
         </h2>
     </div>
 </section>
@@ -401,33 +451,33 @@
         {% endfor %}
     </div>
 </div>-->
-<section>
+<section class="section">
             <!-- 글목록 부분 -->
             <div class="mycards">
                 <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">
-                    {% for App in App_list%}
+                    {% for App_like in App_like_list%}
                     <div class="col">
                         <div class="card h-100">
-                            <img src={{ App.img }}
+                            <img src={{ App_like.img }}
                                  class="card-img-top">
                             <div class="card-body">
-                                <h5 class="card-title">이름 : {{ App.title }}</h5>
-                                <p class="card-username">작성자 : {{ App.username }}</p>
-                                <p class="card-text">{{ App.content }}</p>
-                                <p>주소 : {{ App.address }}</p>
-                                <p>평점 : {{App.star}}</p>
-                                <p class="mycomment">리뷰 : {{ App.comment }}</p>
-                                <p>작성시간 : {{App.time}}</p>
+                                <h5 class="card-title">이름 : {{ App_like.title }}</h5>
+                                <p class="card-username">작성자 : {{ App_like.username }}</p>
+                                <p class="card-text">{{ App_like.content }}</p>
+                                <p>주소 : {{ App_like.address }}</p>
+                                <p>평점 : {{App_like.star}}</p>
+                                <p class="mycomment">리뷰 : {{ App_like.comment }}</p>
+                                <p>작성시간 : {{App_like.time}}</p>
                                 <div style="justify-content : space-evenly; display: flex">
                                     <a href="#" class="btn btn-primary"
-                                       onclick="window.location.href='/detail?num_give={{ App.num }}'">자세히 보기</a>
-                                    <a id="heart{{App.num}}" onclick="toggle_like('{{ App.num }}')">
-                                        {% if App.chkLike == true %}
+                                       onclick="window.location.href='/detail?num_give={{ App_like.num }}'">자세히 보기</a>
+                                    <a id="heart{{App_like.num}}" onclick="toggle_like('{{ App_like.num }}')">
+                                        {% if App_like.chkLike == true %}
                                         <i class="bi bi-heart-fill" aria-hidden="true"></i>
                                         {% else %}
                                         <i class="bi bi-heart" aria-hidden="true"></i>
                                         {% endif %}
-                                        <span style="font-size: 17pt; font-weight: bold">{{ App.like_count }}</span>
+                                        <span style="font-size: 17pt; font-weight: bold">{{ App_like.like_count }}</span>
                                     </a>
                                 </div>
                             </div>
@@ -438,11 +488,11 @@
             </div>
             <!-- 글목록 부분 -->
         </section>
+<p id="test"> test용 </p>
 <!--<nav class="navbar is-fixed-top is-white" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
         <a class="navbar-item" href="/main">
-&lt;!&ndash;            <img src="{{ url_for('static', filename='logo.png') }}">&ndash;&gt;
-            <img src="../static/logo.png">
+            <img src="{{ url_for('static', filename='logo.png') }}">
             <strong class="is-sparta"
                     style="font-family: 'Stylish', sans-serif;font-size: larger;">여행 GADA</strong>
         </a>
@@ -450,13 +500,12 @@
 </nav>-->
 <nav class="navbar is-fixed-top navbar-expand-lg bg-light">
   <div class="container-fluid">
-      <div class="navbar-brand">
-        <a class="navbar-item" href="/main">
-            <img src="../static/logo.png">
-        </a>
-    </div>
     <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+      <a class="navbar-brand" href="/main" style="color: black">GADA</a>
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/main" style="color: black">Home</a>
+        </li>
         <li class="nav-item">
           <a class="nav-link" style="color: black" onclick="sign_out()">로그아웃</a>
         </li>
@@ -465,8 +514,18 @@
         </li>
       </ul>
 
+      <!--<form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchTitle">
+        <button onclick="findTitle()" class="btn btn-outline-success" type="submit">Search</button>
+      </form>-->
+        <!--<form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchTitle">
+            <button onclick="findTitle()">gdgd</button>
+        <button onclick="findTitle()" class="btn btn-outline-success" type="submit">Search</button>
+      </form>-->
         <form class="d-flex" role="search">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchTitle">
+<!--            <button onclick="findTitle()" class="btn btn-outline-success" type="submit">Search</button>-->
       </form>
         <button onclick="findTitle()" class="btn btn-outline-success" type="submit">Search</button>
     </div>
@@ -477,7 +536,6 @@
                  style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1" onclick="closeDaumPostcode()"
                  alt="닫기 버튼">
         </div>
-<p></p>
 </body>
 
     <script>

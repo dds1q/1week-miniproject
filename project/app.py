@@ -26,7 +26,7 @@ db = client.dbsparta
 def home():
     token_receive = request.cookies.get('mytoken')
     try:
-        App_list = list(db.App.find({}, {'_id': False}))
+        App_list = list(db.App.find({}, {'_id': False}).sort("time", -1))
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"username": payload["id"]})
 
@@ -182,7 +182,7 @@ def home1():
         user_info = db.users.find_one({"username": payload["id"]})
         num_receive = int(request.args.get("num_give"))
         board = db.App.find_one({'num': num_receive})
-        comment_list = list(db.comments.find({'num': num_receive}, {'_id': False}))
+        comment_list = list(db.comments.find({'num': num_receive}, {'_id': False}).sort("time",-1))
 
         like_count = db.likes.count_documents({"num": num_receive})
         chkLike = bool(db.likes.find_one({"num": num_receive, "username": user_info["username"]}))
@@ -201,10 +201,13 @@ def comment_post():
     user_info = db.users.find_one({"username": payload["id"]})
     comment_receive = request.form['comment_give']
     num_receive = request.form['num_give']
+    mytime = datetime.now().strftime('%Y-%m-%d %H:%M')
     doc = {
         'username':user_info["username"],
         'comment': comment_receive,
-        'num':int(num_receive)
+        'num':int(num_receive),
+        'time':mytime
+
     }
     db.comments.insert_one( doc )
     return jsonify({'msg':'저장 완료!'})
@@ -216,6 +219,33 @@ def comment_get():
     comment_list = list(db.comments.find({}, {'_id': False}))
 
     return jsonify({'comment_list': comment_list})
+
+
+@app.route('/go_like_list')
+def go_like_list():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        App_list = list(db.App.find({}, {'_id': False}).sort("time",-1))
+        App_like_list = []
+
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"username": payload["id"]})
+
+        for App in App_list:
+            if bool(db.likes.find_one({"num": App['num'],"username": user_info["username"]})) :
+                App_like_list.append( App )
+
+        for App_like in App_like_list:
+            App_like["like_count"] = db.likes.count_documents({"num": App_like['num']})
+            App_like["chkLike"] = bool(db.likes.find_one({"num": App_like['num'],
+                                                     "username": user_info["username"]}))
+        return render_template('index_like.html', user_info=user_info, App_like_list=App_like_list)
+
+        # index > main으로 변경
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
 @app.route('/update_like', methods=['POST'])
 def update_like():
