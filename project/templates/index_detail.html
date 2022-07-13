@@ -138,6 +138,48 @@
 </head>
 
 <body>
+<!--<nav class="navbar is-fixed-top is-white" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="/main">
+            <img src="{{ url_for('static', filename='logo.png') }}">
+            <strong class="is-sparta"
+                    style="font-family: 'Stylish', sans-serif;font-size: larger;">여행 GADA</strong>
+        </a>
+    </div>
+</nav>-->
+<nav class="navbar is-fixed-top navbar-expand-lg bg-light">
+  <div class="container-fluid">
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+      <a class="navbar-brand" href="/main" style="color: black">GADA</a>
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/main" style="color: black">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" style="color: black" onclick="sign_out()">로그아웃</a>
+        </li>
+          <li class="nav-item disabled">
+          <a class="nav-link disabled" href="#" style="color: black">{{ user_info.username }} 님 안녕하세요</a>
+        </li>
+      </ul>
+
+      <!--<form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchTitle">
+        <button onclick="findTitle()" class="btn btn-outline-success" type="submit">Search</button>
+      </form>-->
+        <!--<form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchTitle">
+            <button onclick="findTitle()">gdgd</button>
+        <button onclick="findTitle()" class="btn btn-outline-success" type="submit">Search</button>
+      </form>-->
+        <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchTitle">
+<!--            <button onclick="findTitle()" class="btn btn-outline-success" type="submit">Search</button>-->
+      </form>
+        <button onclick="findTitle()" class="btn btn-outline-success" type="submit">Search</button>
+    </div>
+  </div>
+</nav>
 <div class="mytitle">
     <h1>내 생애 최고의 영화들</h1>
     <!-- Button trigger modal -->
@@ -199,48 +241,7 @@
         </div>
     </div>
 </div>
-<!--<nav class="navbar is-fixed-top is-white" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-        <a class="navbar-item" href="/main">
-            <img src="{{ url_for('static', filename='logo.png') }}">
-            <strong class="is-sparta"
-                    style="font-family: 'Stylish', sans-serif;font-size: larger;">여행 GADA</strong>
-        </a>
-    </div>
-</nav>-->
-<nav class="navbar is-fixed-top navbar-expand-lg bg-light">
-  <div class="container-fluid">
-    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-      <a class="navbar-brand" href="/main" style="color: black">GADA</a>
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/main" style="color: black">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" style="color: black" onclick="sign_out()">로그아웃</a>
-        </li>
-          <li class="nav-item disabled">
-          <a class="nav-link disabled" href="#" style="color: black">{{ user_info.username }} 님 안녕하세요</a>
-        </li>
-      </ul>
 
-      <!--<form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchTitle">
-        <button onclick="findTitle()" class="btn btn-outline-success" type="submit">Search</button>
-      </form>-->
-        <!--<form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchTitle">
-            <button onclick="findTitle()">gdgd</button>
-        <button onclick="findTitle()" class="btn btn-outline-success" type="submit">Search</button>
-      </form>-->
-        <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchTitle">
-<!--            <button onclick="findTitle()" class="btn btn-outline-success" type="submit">Search</button>-->
-      </form>
-        <button onclick="findTitle()" class="btn btn-outline-success" type="submit">Search</button>
-    </div>
-  </div>
-</nav>
 </body>
 
 </html>
