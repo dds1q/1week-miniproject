@@ -21,10 +21,6 @@ SECRET_KEY = 'SPARTA'
 client = MongoClient('mongodb+srv://test:sparta@cluster0.aaaog.mongodb.net/Cluster0?retryWrites=true&w=majority')
 db = client.dbsparta
 
-# @app.route('/main')
-# def home():
-#     App_list = list(db.App.find({}, {'_id': False}))
-#     return render_template('index.html', App_list=App_list)
 
 @app.route('/main')
 def home():
@@ -33,22 +29,30 @@ def home():
         App_list = list(db.App.find({}, {'_id': False}))
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"username": payload["id"]})
-        return render_template('index.html', user_info=user_info , App_list=App_list)
+
+        for App in App_list:
+            App["like_count"] = db.likes.count_documents({"num": App['num']})
+            App["chkLike"] = bool(db.likes.find_one({"num": App['num'],
+                                                     "username": user_info["username"]}))
+        return render_template('index.html', user_info=user_info, App_list=App_list)
+
         # index > main으로 변경
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
+
 @app.route("/about/<name>")
 def admin(name):
-   return 'About %s' %name
+    return 'About %s' % name
 
 
 @app.route('/')
 def login():
     msg = request.args.get("msg")
     return render_template('login.html', msg=msg)
+
 
 @app.route("/main/<search_receive>")
 def search(search_receive):
@@ -59,7 +63,6 @@ def search(search_receive):
         return render_template('/index.html', msg='내용을 찾을 수 없습니다')
     else:
         return render_template('/index.html', search_info=search_info, msg=None)
-
 
 
 @app.route("/main")
@@ -78,7 +81,6 @@ def logintest():
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
 
-
 @app.route('/sign_in', methods=['POST'])
 def sign_in():
     # 로그인
@@ -90,8 +92,8 @@ def sign_in():
 
     if result is not None:
         payload = {
-         'id': username_receive,
-         'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
+            'id': username_receive,
+            'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
         }
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
 
@@ -107,12 +109,12 @@ def sign_up():
     password_receive = request.form['password_give']
     password_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
     doc = {
-        "username": username_receive,                               # 아이디
-        "password": password_hash,                                  # 비밀번호
-        "profile_name": username_receive,                           # 프로필 이름 기본값은 아이디
-        "profile_pic": "",                                          # 프로필 사진 파일 이름
-        "profile_pic_real": "profile_pics/profile_placeholder.png", # 프로필 사진 기본 이미지
-        "profile_info": ""                                          # 프로필 한 마디
+        "username": username_receive,  # 아이디
+        "password": password_hash,  # 비밀번호
+        "profile_name": username_receive,  # 프로필 이름 기본값은 아이디
+        "profile_pic": "",  # 프로필 사진 파일 이름
+        "profile_pic_real": "profile_pics/profile_placeholder.png",  # 프로필 사진 기본 이미지
+        "profile_info": ""  # 프로필 한 마디
     }
     db.users.insert_one(doc)
     return jsonify({'result': 'success'})
@@ -124,57 +126,11 @@ def check_dup():
     exists = bool(db.users.find_one({"username": username_receive}))
     return jsonify({'result': 'success', 'exists': exists})
 
+
 @app.route('/about/<int:user_id>')
 def get_message(user_id):
-   return 'Your ID is %d' % user_id
-#
-# @app.route("/submit", methods=["POST"])
-# def web_write_post():
-#     title_receive = request.form['title_give']
-#     img_receive = request.form['img_give']
-#     comment_receive = request.form['comment_give']
-#     star_receive = request.form['star_give']
-#     desc_receive = request.form['desc_give']
-#     mytime = datetime.now().strftime('%Y-%m-%d %H:%M')
-#
-#     doc = {
-#         'title' : title_receive,
-#         'img' : img_receive,
-#         'comment' : comment_receive,
-#         'star' : star_receive,
-#         'desc' : desc_receive,
-#         'time' : mytime
-#     }
-#     db.App.insert_one(doc)
-#
-#     return jsonify({'msg': '등록완료'})
+    return 'Your ID is %d' % user_id
 
-# 포스트작성
-# @app.route("/submit", methods=["POST"])
-# def web_write_post():
-#     title_receive = request.form['title_give']
-#     img_receive = request.form['img_give']
-#     comment_receive = request.form['comment_give']
-#     star_receive = request.form['star_give']
-#     desc_receive = request.form['desc_give']
-#     mytime = datetime.now().strftime('%Y-%m-%d %H:%M')
-#     url_receive = request.form['url_give']
-#
-#     count = len(list(db.App.find({}, {'_id': False}))) + 1
-#
-#     doc = {
-#         'num' : count,
-#         'title' : title_receive,
-#         'img' : img_receive,
-#         'comment' : comment_receive,
-#         'star':'⭐'* int(star_receive),
-#         'desc':desc_receive,
-#         'time': mytime,
-#         'url' : url_receive
-#     }
-#     db.App.insert_one(doc)
-#
-#     return jsonify({'msg': '등록완료'})
 
 @app.route("/submit", methods=["POST"])
 def web_write_post():
@@ -214,38 +170,73 @@ def web_write_get():
     write_list = list(db.App.find({}, {'_id': False}))
     return jsonify({'orders': write_list})
 
-# 이동규님
-@app.route('/detail', methods=["GET"])
-def home1():
-    num_receive = request.args.get("num_give")
 
-    board = db.App.find_one({'num':int(num_receive)})
-    comment_list = list(db.comments.find({'num':int(num_receive)},{'_id': False}) )
-    return render_template('index_detail.html',comment_list = comment_list , board = board )
+@app.route('/detail')
+def home1():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"username": payload["id"]})
+        num_receive = int(request.args.get("num_give"))
+        board = db.App.find_one({'num': num_receive})
+        comment_list = list(db.comments.find({'num': num_receive}, {'_id': False}))
+
+        like_count = db.likes.count_documents({"num": num_receive})
+        chkLike = bool(db.likes.find_one({"num": num_receive, "username": user_info["username"]}))
+        return render_template('index_detail.html', comment_list=comment_list, board=board
+                               , id=id, like_count=like_count, chkLike=chkLike, user_info=user_info)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+
 
 @app.route("/save-comment", methods=["POST"])
 def comment_post():
-    nickname_receive = request.form['nickname_give']
+    token_receive = request.cookies.get('mytoken')
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    user_info = db.users.find_one({"username": payload["id"]})
     comment_receive = request.form['comment_give']
     num_receive = request.form['num_give']
-
     doc = {
-        'nickname':nickname_receive,
+        'username':user_info["username"],
         'comment': comment_receive,
         'num':int(num_receive)
     }
-
     db.comments.insert_one( doc )
-
     return jsonify({'msg':'저장 완료!'})
+
 
 # 코멘트받아오기
 @app.route("/all-comment", methods=["GET"])
 def comment_get():
+    comment_list = list(db.comments.find({}, {'_id': False}))
 
-    comment_list = list(db.comments.find({},{'_id':False}))
+    return jsonify({'comment_list': comment_list})
 
-    return jsonify({'comment_list':comment_list})
+@app.route('/update_like', methods=['POST'])
+def update_like():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"username": payload["id"]})
+        num_receive = int(request.form["num_give"])
+        action_receive = request.form["action_give"]
+        doc = {
+            "num": num_receive,
+            "username": user_info["username"]
+        }
+        if action_receive == "like":
+            db.likes.insert_one(doc)
+        else:
+            db.likes.delete_one(doc)
+        # action 이후 좋아요 개수를 구한다
+        count = db.likes.count_documents({"num": num_receive})
+        return jsonify({"result": "success", 'msg': 'updated', "count": count})
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
 
 if __name__ == '__main__':
