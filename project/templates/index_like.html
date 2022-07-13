@@ -21,6 +21,7 @@
         <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 
+
     <style>
         /** {
             font-family: 'Gowun Dodum', sans-serif;
@@ -454,29 +455,29 @@
             <!-- 글목록 부분 -->
             <div class="mycards">
                 <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">
-                    {% for App in App_list%}
+                    {% for App_like in App_like_list%}
                     <div class="col">
                         <div class="card h-100">
-                            <img src={{ App.img }}
+                            <img src={{ App_like.img }}
                                  class="card-img-top">
                             <div class="card-body">
-                                <h5 class="card-title">이름 : {{ App.title }}</h5>
-                                <p class="card-username">작성자 : {{ App.username }}</p>
-                                <p class="card-text">{{ App.content }}</p>
-                                <p>주소 : {{ App.address }}</p>
-                                <p>평점 : {{App.star}}</p>
-                                <p class="mycomment">리뷰 : {{ App.comment }}</p>
-                                <p>작성시간 : {{App.time}}</p>
+                                <h5 class="card-title">이름 : {{ App_like.title }}</h5>
+                                <p class="card-username">작성자 : {{ App_like.username }}</p>
+                                <p class="card-text">{{ App_like.content }}</p>
+                                <p>주소 : {{ App_like.address }}</p>
+                                <p>평점 : {{App_like.star}}</p>
+                                <p class="mycomment">리뷰 : {{ App_like.comment }}</p>
+                                <p>작성시간 : {{App_like.time}}</p>
                                 <div style="justify-content : space-evenly; display: flex">
                                     <a href="#" class="btn btn-primary"
-                                       onclick="window.location.href='/detail?num_give={{ App.num }}'">자세히 보기</a>
-                                    <a id="heart{{App.num}}" onclick="toggle_like('{{ App.num }}')">
-                                        {% if App.chkLike == true %}
+                                       onclick="window.location.href='/detail?num_give={{ App_like.num }}'">자세히 보기</a>
+                                    <a id="heart{{App_like.num}}" onclick="toggle_like('{{ App_like.num }}')">
+                                        {% if App_like.chkLike == true %}
                                         <i class="bi bi-heart-fill" aria-hidden="true"></i>
                                         {% else %}
                                         <i class="bi bi-heart" aria-hidden="true"></i>
                                         {% endif %}
-                                        <span style="font-size: 17pt; font-weight: bold">{{ App.like_count }}</span>
+                                        <span style="font-size: 17pt; font-weight: bold">{{ App_like.like_count }}</span>
                                     </a>
                                 </div>
                             </div>

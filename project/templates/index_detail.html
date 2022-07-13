@@ -13,10 +13,17 @@
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <title>상세보기</title>
     <style>
-        * {
+        /** {
             font-family: 'Gowun Dodum', sans-serif;
+        }*/
+
+        * {
+            font-family: 'Jua', sans-serif;
         }
 
         .container {
@@ -70,9 +77,9 @@
 
         .mytitle {
             width: 100%;
-            height: 250px;
+            height: 400px;
 
-            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://movie-phinf.pstatic.net/20210715_95/1626338192428gTnJl_JPEG/movie_image.jpg');
+            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://wishbeen-seoul.s3.ap-northeast-2.amazonaws.com/plan/1463029230608__%EC%8A%AC%EB%A1%9C%EB%B2%A0%EB%8B%88%EC%95%8403.jpg');
             background-position: center;
             background-size: cover;
 
@@ -82,6 +89,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+
         }
 
         .bi-heart {
@@ -102,6 +110,15 @@
         $(document).ready(function () {
 
         });
+        $(window).bind("pageshow",function (event){
+            if( event.originalEvent.persisted || (window.performance && window.performance.navigation.type == 2)){
+                console.log("BFCahe로부터 복원됨");
+                location.reload();
+            } else{
+                console.log("새로열린 페이지")
+            }
+        })
+
 
         // 닉네임과 코멘트를 작성 후 comments 테이블에 저장
         function save_comment(num) {
@@ -118,46 +135,103 @@
             })
         }
 
+        // 로그아웃
+        function sign_out() {
+            $.removeCookie('mytoken', {path: '/'});
+            alert('로그아웃!')
+
+            window.location.href = '/'
+        }
+
+        $(document).ready(function () {
+
+        });
+
+
         // 좋아요 버튼을 누를 시 등록 또는 취소되는 함수
-        // function toggle_like(num) {
-        //     console.log(num)
-        //     let $i_like = $('#heart').find("i")
-        //
-        //     if ( $i_like.hasClass("bi-heart-fill")) {
-        //         $.ajax({
-        //             type: "POST",
-        //             url: "/update_like",
-        //             data: {
-        //                 num_give: num,
-        //                 action_give: "unlike"
-        //             },
-        //             success: function (response) {
-        //                 console.log("unlike")
-        //                 $i_like.addClass("bi-heart").removeClass("bi-heart-fill")
-        //                 $('#heart span').text(response["count"])
-        //             }
-        //         })
-        //     } else {
-        //         $.ajax({
-        //             type: "POST",
-        //             url: "/update_like",
-        //             data: {
-        //                 num_give: num,
-        //                 action_give: "like"
-        //             },
-        //             success: function (response) {
-        //                 console.log("like")
-        //                 $i_like.addClass("bi-heart-fill").removeClass("bi-heart")
-        //                 $('#heart span').text(response["count"])
-        //             }
-        //         })
-        //
-        //     }
-        // }
+        function toggle_like(num) {
+            console.log(num)
+            let $i_like = $('#heart').find("i")
+
+            if ( $i_like.hasClass("bi-heart-fill")) {
+                $.ajax({
+                    type: "POST",
+                    url: "/update_like",
+                    data: {
+                        num_give: num,
+                        action_give: "unlike"
+                    },
+                    success: function (response) {
+                        console.log("unlike")
+                        $i_like.addClass("bi-heart").removeClass("bi-heart-fill")
+                        $('#heart span').text(response["count"])
+                    }
+                })
+            } else {
+                $.ajax({
+                    type: "POST",
+                    url: "/update_like",
+                    data: {
+                        num_give: num,
+                        action_give: "like"
+                    },
+                    success: function (response) {
+                        console.log("like")
+                        $i_like.addClass("bi-heart-fill").removeClass("bi-heart")
+                        $('#heart span').text(response["count"])
+                    }
+                })
+
+            }
+        }
+
+
     </script>
 </head>
 
 <body>
+<!--<nav class="navbar is-fixed-top is-white" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="/main">
+            <img src="{{ url_for('static', filename='logo.png') }}">
+            <strong class="is-sparta"
+                    style="font-family: 'Stylish', sans-serif;font-size: larger;">여행 GADA</strong>
+        </a>
+    </div>
+</nav>-->
+<nav class="navbar is-fixed-top navbar-expand-lg bg-light">
+  <div class="container-fluid">
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+      <a class="navbar-brand" href="/main" style="color: black">GADA</a>
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/main" style="color: black">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" style="color: black" onclick="sign_out()">로그아웃</a>
+        </li>
+          <li class="nav-item disabled">
+          <a class="nav-link disabled" href="#" style="color: black">{{ user_info.username }} 님 안녕하세요</a>
+        </li>
+      </ul>
+
+      <!--<form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchTitle">
+        <button onclick="findTitle()" class="btn btn-outline-success" type="submit">Search</button>
+      </form>-->
+        <!--<form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchTitle">
+            <button onclick="findTitle()">gdgd</button>
+        <button onclick="findTitle()" class="btn btn-outline-success" type="submit">Search</button>
+      </form>-->
+        <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchTitle">
+<!--            <button onclick="findTitle()" class="btn btn-outline-success" type="submit">Search</button>-->
+      </form>
+        <button onclick="findTitle()" class="btn btn-outline-success" type="submit">Search</button>
+    </div>
+  </div>
+</nav>
 <div class="mytitle">
     <h1>내 생애 최고의 영화들</h1>
     <!-- Button trigger modal -->
@@ -177,9 +251,8 @@
             <div class="content">
                 <h3>제목 : {{ board.title }}</h3>
                 <h4>작성자 : {{ board.username }}</h4>
-                <h4>장소 : {{ board.replace }}</h4>
+                <h4>장소 : {{ board.address }}</h4>
                 <h4>평점 : {{ board.star }}</h4>
-                <h4>소개 : {{ board.desc }}</h4>
                 <a id="heart"  onclick="toggle_like('{{board.num}}')">
                     {% if chkLike == true %}
                     <i class="bi bi-heart-fill" aria-hidden="true"></i>
@@ -210,7 +283,8 @@
                     <div class="card-body">
                         <blockquote class="blockquote mb-0">
                             <p>{{ x.comment }}</p>
-                            <footer class="blockquote-footer">{{ x.username }}</cite>
+                            <footer class="blockquote-footer">{{ x.username }}
+                                <span style="font-size: 15px;">  {{x.time}}</span></cite>
                             </footer>
                         </blockquote>
                     </div>
