@@ -36,6 +36,18 @@ def login():
     msg = request.args.get("msg")
     return render_template('login.html', msg=msg)
 
+@app.route("/main/<search_receive>")
+def search(search_receive):
+    print(search_receive)
+    search_info = db.users.find_one({"title": search_receive})
+    print(search_info)
+    if search_info is None:
+        return render_template('/index.html', msg='내용을 찾을 수 없습니다')
+    else:
+        return render_template('/index.html', search_info=search_info, msg=None)
+
+
+
 @app.route("/main")
 def logintest():
     App_list = list(db.App.find({}, {'_id': False}))

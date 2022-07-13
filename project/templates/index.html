@@ -249,9 +249,34 @@
         }
 
         function logout(){
+
+            $.removeCookie('mytoken', {path: '/'});
             alert('로그아웃!')
-            // $.removeCookie('mytoken');
             window.location.href='/'
+
+            /*function sign_out() {
+                $.removeCookie('mytoken', {path: '/'});
+                alert('로그아웃!')
+            }*/
+        }
+
+        function findTitle() {
+            alert('httpasdfasfd')
+            let search = $('#searchTitle').val()
+            if (search == '') {
+                alert('내용을 입력해주세요')
+                return
+            }
+            window.location.href=`/main/search_give=${search}`
+            if ('{{ msg }}' != null) {
+                alert('{{ msg }}');
+                return;
+            }
+
+            $('#cards-box').empty()
+
+
+
         }
 
     </script>
@@ -373,10 +398,21 @@
           <a class="nav-link disabled" href="#" style="color: black">{{ user_info.profile_name }} 님 안녕하세요</a>
         </li>
       </ul>
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
+
+      <!--<form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchTitle">
+        <button onclick="findTitle()" class="btn btn-outline-success" type="submit">Search</button>
+      </form>-->
+        <!--<form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchTitle">
+            <button onclick="findTitle()">gdgd</button>
+        <button onclick="findTitle()" class="btn btn-outline-success" type="submit">Search</button>
+      </form>-->
+        <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchTitle">
+<!--            <button onclick="findTitle()" class="btn btn-outline-success" type="submit">Search</button>-->
       </form>
+        <button onclick="findTitle()" class="btn btn-outline-success" type="submit">Search</button>
     </div>
   </div>
 </nav>
