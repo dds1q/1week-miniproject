@@ -216,8 +216,23 @@
             if (search == '') {
                 alert('내용을 입력해주세요')
                 return
+            } else {
+                $.ajax({
+                    type: "GET",
+                    url: "/search",
+                    data: { search_give : search },
+                    success: function (response) {
+                        if (response['msg'] == '해당 게시물이 없습니다.'){
+                            alert(response['msg']);
+                            window.location.href='/main'
+                        } else {
+                            window.location.href=`search?search_give=${search}`
+                        }
+                    }
+                })
             }
-            window.location.href=`/search?search_give=${search}`
+
+
         }
 
         function toggle_like(num) {
