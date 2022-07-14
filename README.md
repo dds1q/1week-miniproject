@@ -23,6 +23,9 @@
 #### public github repo 주소<br>
 https://github.com/BackDev19/1week-miniproject<br><br>
 
+### 사용스킬
+<img alt="Html" src ="https://img.shields.io/badge/HTML5-E34F26.svg?&style=for-the-badge&logo=HTML5&logoColor=white"/>
+<img alt="Html" src ="https://img.shields.io/badge/CSS3-E34F26.svg?&style=for-the-badge&logo=HTML5&logoColor=white"/>
 ```
 사용된 패키지들
 flask, pymongo, pyjwt 1.7.1, jinja2, requests,
