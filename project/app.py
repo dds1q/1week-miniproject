@@ -63,8 +63,9 @@ def search():
     token_receive = request.cookies.get('mytoken')
     print(search_target)
     print(search_info)
+
     if search_info is None:
-        return jsonify({'msg' : '데이터가 없습니다'})
+        return jsonify({'msg': "해당 게시물이 없습니다."})
 
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
