@@ -33,7 +33,7 @@ https://github.com/BackDev19/1week-miniproject<br><br>
 
 ```
 사용된 패키지들
-flask, pymongo, pyjwt 1.7.1, jinja2, requests,flask
+flask, pymongo, pyjwt 1.7.1, jinja2, requests
 ```
 
 ---
