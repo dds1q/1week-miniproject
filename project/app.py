@@ -59,7 +59,7 @@ def login():
 @app.route("/search")
 def search():
     search_target = request.args.get("search_give")
-    search_info = db.App.find_one({"title": search_target})
+    search_info = list(db.App.find({"title": { '$regex' : search_target }}).sort("time",-1))
     token_receive = request.cookies.get('mytoken')
     print(search_target)
     print(search_info)
@@ -70,6 +70,12 @@ def search():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"username": payload["id"]})
+
+        for info in search_info :
+            info["like_count"] = db.likes.count_documents({"App_id": str(info["_id"])})
+            info["chkLike"] = bool(db.likes.find_one({"App_id": str(info['_id'])
+                                                                , "username": user_info["username"]}))
+
         print(user_info)
         return render_template('/searchResult.html', search_info=search_info, user_info=user_info)
         # index > main으로 변경
@@ -77,6 +83,7 @@ def search():
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+
 
 
     # if search_info is None:

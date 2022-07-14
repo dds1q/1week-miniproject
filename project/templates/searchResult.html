@@ -377,35 +377,38 @@
 </div>-->
 <section>
             <!-- 글목록 부분 -->
+
             <div class="mycards">
                 <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">
+                    {% for info in search_info%}
                     <div class="col">
                         <div class="card h-100">
-                            <img src={{ search_info.img }}
+                            <img src={{ info.img }}
                                  class="card-img-top">
                             <div class="card-body">
-                                <h5 class="card-title">이름 : {{ search_info.title }}</h5>
-                                <p class="card-username">작성자 : {{ search_info.username }}</p>
-                                <p class="card-text">{{ search_info.content }}</p>
-                                <p>주소 : {{ search_info.address }}</p>
-                                <p>평점 : {{search_info.star}}</p>
-                                <p class="mycomment">리뷰 : {{ search_info.comment }}</p>
-                                <p>작성시간 : {{search_info.time}}</p>
+                                <h5 class="card-title">이름 : {{ info.title }}</h5>
+                                <p class="card-username">작성자 : {{ info.username }}</p>
+                                <p class="card-text">{{ info.content }}</p>
+                                <p>주소 : {{ info.address }}</p>
+                                <p>평점 : {{info.star}}</p>
+                                <p class="mycomment">리뷰 : {{ info.comment }}</p>
+                                <p>작성시간 : {{info.time}}</p>
                                 <div style="justify-content : space-evenly; display: flex">
                                     <a href="#" class="btn btn-primary"
-                                       onclick="window.location.href='/detail?App_id_give={{ search_info._id }}'">자세히 보기</a>
-                                    <a id="heart{{search_info._id}}" onclick="toggle_like('{{ search_info._id }}')">
-                                        {% if search_info.chkLike == true %}
+                                       onclick="window.location.href='/detail?App_id_give={{ info._id }}'">자세히 보기</a>
+                                    <a id="heart{{info._id}}" onclick="toggle_like('{{ info._id }}')">
+                                        {% if info.chkLike == true %}
                                         <i class="bi bi-heart-fill" aria-hidden="true"></i>
                                         {% else %}
                                         <i class="bi bi-heart" aria-hidden="true"></i>
                                         {% endif %}
-                                        <span style="font-size: 17pt; font-weight: bold">{{ search_info.like_count }}</span>
+                                        <span style="font-size: 17pt; font-weight: bold">{{ info.like_count }}</span>
                                     </a>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    {% endfor %}
                 </div>
             </div>
             <!-- 글목록 부분 -->
