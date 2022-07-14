@@ -78,5 +78,3 @@ flask, pymongo, pyjwt 1.7.1, jinja2, requests
 
 
 
-
-
