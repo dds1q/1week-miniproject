@@ -30,6 +30,7 @@ https://github.com/BackDev19/1week-miniproject<br><br>
 <img alt="Jinja" src ="https://img.shields.io/badge/Jinja2-B41717.svg?&style=for-the-badge&logo=Jinja&logoColor=white"/>
 <img alt="Python" src ="https://img.shields.io/badge/Python-3776AB.svg?&style=for-the-badge&logo=Python&logoColor=white"/>
 <img alt="MongoDB" src ="https://img.shields.io/badge/MongoDB-47A248.svg?&style=for-the-badge&logo=MongoDB&logoColor=white"/>
+
 ```
 사용된 패키지들
 flask, pymongo, pyjwt 1.7.1, jinja2, requests,
