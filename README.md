@@ -24,6 +24,10 @@
 https://github.com/BackDev19/1week-miniproject<br><br>
 
 ```
+사용된 스킬
+<img alt="Html" src ="https://img.shields.io/badge/HTML5.svg?&style=for-the-badge&logo=HTML5&logoColor=#E34F26"/>
+
+```
 사용된 패키지들
 flask, pymongo, pyjwt 1.7.1, jinja2, requests,
 ```
