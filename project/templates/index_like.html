@@ -15,150 +15,13 @@
                 integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
                 crossorigin="anonymous"></script>
         <script src="static/index.js"></script>
-        <title>스파르타 피디아</title>
+        <title>KOREAN TRAVEL : GADA</title>
         <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
         <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 
 
-    <style>
-        /** {
-            font-family: 'Gowun Dodum', sans-serif;
-        }
-*/
-        * {
-            font-family: 'Jua', sans-serif;
-        }
-
-        .card {
-            box-shadow: 3px 3px 8px 0px grey;
-            transition: 0.5s;
-        }
-
-        .card:hover {
-            box-shadow: 3px 3px 8px 0px black;
-        }
-
-        .card-img-top {
-            height: 170px;
-            object-fit: cover;
-        }
-
-        .mytitle {
-            width: 100%;
-            height: 400px;
-
-            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://wishbeen-seoul.s3.ap-northeast-2.amazonaws.com/plan/1463029230608__%EC%8A%AC%EB%A1%9C%EB%B2%A0%EB%8B%88%EC%95%8403.jpg');
-            background-position: center;
-            background-size: cover;
-
-            color: white;
-
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-
-        }
-
-        .mytitle > button {
-            width: 200px;
-            height: 50px;
-
-            background-color: transparent;
-            color: white;
-
-            border-radius: 50px;
-            border: 1px solid white;
-
-            margin-top: 10px;
-        }
-
-        .mytitle > button:hover {
-            border: 2px solid white;
-        }
-
-        .mycomment {
-            color: gray;
-        }
-
-        .mycards {
-            /*margin: 20px auto 0px auto;
-
-            max-width: 1200px;*/
-            width: 95%;
-            max-width: 1100px;
-            margin: 20px auto 0px auto;
-        }
-
-        /*.card {
-            box-shadow: 5px 5px 3px 3px grey;
-        }*/
-
-       /* .section {
-            width: 600px;
-            max-width: 100%;
-            margin: auto;
-        }*/
-
-        .banner {
-            cursor: pointer;
-        }
-
-        .mypost {
-            width: 95%;
-            max-width: 500px;
-            margin: 20px auto 0px auto;
-            padding: 20px;
-            box-shadow: 0px 0px 3px 0px gray;
-
-            display: none;
-        }
-
-        .mybtns {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-
-            margin-top: 20px;
-        }
-
-        .mybtns > button {
-            margin-right: 10px;
-        }
-
-        /* style.css */
-
-        /* 이미지 관련 스타일 조정 */
-        .button {
-            display: flex;
-            justify-content: center;
-        }
-
-        label {
-            cursor: pointer;
-            font-size: 1em;
-        }
-
-        /* 못생긴 기존 input 숨기기 */
-        #chooseFile {
-            visibility: hidden;
-        }
-
-        .bi-heart {
-            font-size: 25px;
-            line-height: 25px;
-            color: crimson;
-        }
-
-        .bi-heart-fill {
-            font-size: 25px;
-            line-height: 25px;
-            color: crimson;
-        }
-    </style>
     <script>
         $(window).bind("pageshow",function (event){
             if( event.originalEvent.persisted || (window.performance && window.performance.navigation.type == 2)){
@@ -296,6 +159,13 @@
                 return
             }
             window.location.href=`/search?search_give=${search}`
+        }
+
+        function sign_out() {
+            $.removeCookie('mytoken', {path: '/'});
+            alert('로그아웃!')
+
+            window.location.href = '/'
         }
 
         function toggle_like(id) {
