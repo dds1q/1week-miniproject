@@ -22,19 +22,18 @@ SECRET_KEY = 'SPARTA'
 # 인권
 client = MongoClient('mongodb+srv://test:sparta@cluster0.aaaog.mongodb.net/Cluster0?retryWrites=true&w=majority')
 db = client.dbsparta
-
-
 @app.route('/main')
 def home():
     token_receive = request.cookies.get('mytoken')
     try:
-        App_list = list(db.App.find({}, {'_id': False}).sort("time", -1))
+        App_list = list(db.App.find({}).sort("time", -1))
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"username": payload["id"]})
 
         for App in App_list:
-            App["like_count"] = db.likes.count_documents({"num": App['num']})
-            App["chkLike"] = bool(db.likes.find_one({"num": App['num'],
+            App["_id"] = str( App["_id"] )
+            App["like_count"] = db.likes.count_documents({"App_id": App["_id"]})
+            App["chkLike"] = bool(db.likes.find_one({"App_id": App['_id'],
                                                      "username": user_info["username"]}))
         return render_template('index.html', user_info=user_info, App_list=App_list)
 
@@ -43,8 +42,6 @@ def home():
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
-
-
 
 
 
@@ -153,7 +150,6 @@ def check_dup():
 def get_message(user_id):
     return 'Your ID is %d' % user_id
 
-
 @app.route("/submit", methods=["POST"])
 def web_write_post():
     token_receive = request.cookies.get('mytoken')
@@ -167,10 +163,7 @@ def web_write_post():
         address_receive = request.form['address_give']
         mytime = datetime.now().strftime('%Y-%m-%d %H:%M')
 
-        count = len(list(db.App.find({}, {'_id': False}))) + 1
-
         doc = {
-            'num': count,
             "username": user_info["username"],
             'title': title_receive,
             'img': img_receive,
@@ -195,17 +188,17 @@ def web_write_get():
 # 게시글 삭제
 @app.route("/delete_post", methods=["POST"])
 def delete_post():
-    num_receive = int( request.form['num_give'] )
-    db.App.delete_one({'num':num_receive} )
-    db.comments.delete_many({'num': num_receive} )
-    db.likes.delete_many({'num': num_receive})
+    App_id_receive = request.form['App_id_give']
+    db.App.delete_one({'_id':ObjectId(App_id_receive)} )
+    db.comments.delete_many({'App_id':App_id_receive} )
+    db.likes.delete_many({'App_id':App_id_receive } )
     return jsonify({'msg':'삭제 완료!'})
 
 # 댓글 삭제
 @app.route("/delete_comment", methods=["POST"])
 def delete_comment():
-    id_receive = request.form['id_give']
-    db.comments.delete_one({'_id': ObjectId( id_receive ) } )
+    comment_id_receive = request.form['comment_id_give']
+    db.comments.delete_one({'_id': ObjectId( comment_id_receive ) } )
     return jsonify({'msg':'삭제 완료!'})
 
 
@@ -215,12 +208,11 @@ def home1():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"username": payload["id"]})
-        num_receive = int(request.args.get("num_give"))
-        board = db.App.find_one({'num': num_receive})
-        comment_list = list(db.comments.find({'num': num_receive}).sort("time",-1))
-
-        like_count = db.likes.count_documents({"num": num_receive})
-        chkLike = bool(db.likes.find_one({"num": num_receive, "username": user_info["username"]}))
+        App_id_receive = request.args.get("App_id_give")
+        board = db.App.find_one({'_id': ObjectId(App_id_receive)})
+        comment_list = list(db.comments.find({'App_id': App_id_receive}).sort("time",-1))
+        like_count = db.likes.count_documents({"App_id": App_id_receive})
+        chkLike = bool(db.likes.find_one({"App_id": App_id_receive, "username": user_info["username"]}))
         return render_template('index_detail.html', comment_list=comment_list, board=board
                                , id=id, like_count=like_count, chkLike=chkLike, user_info=user_info)
     except jwt.ExpiredSignatureError:
@@ -228,25 +220,22 @@ def home1():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
-
 @app.route("/save-comment", methods=["POST"])
 def comment_post():
     token_receive = request.cookies.get('mytoken')
     payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
     user_info = db.users.find_one({"username": payload["id"]})
     comment_receive = request.form['comment_give']
-    num_receive = request.form['num_give']
+    App_id_receive = request.form['App_id_give']
     mytime = datetime.now().strftime('%Y-%m-%d %H:%M')
     doc = {
         'username':user_info["username"],
         'comment': comment_receive,
-        'num':int(num_receive),
+        'App_id':App_id_receive,
         'time':mytime
-
     }
     db.comments.insert_one( doc )
     return jsonify({'msg':'저장 완료!'})
-
 
 # 코멘트받아오기
 @app.route("/all-comment", methods=["GET"])
@@ -260,19 +249,19 @@ def comment_get():
 def go_like_list():
     token_receive = request.cookies.get('mytoken')
     try:
-        App_list = list(db.App.find({}, {'_id': False}).sort("time",-1))
+        App_list = list(db.App.find({}).sort("time",-1))
         App_like_list = []
 
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"username": payload["id"]})
 
         for App in App_list:
-            if bool(db.likes.find_one({"num": App['num'],"username": user_info["username"]})) :
+            if bool(db.likes.find_one({"App_id": str(App['_id']),"username": user_info["username"]})) :
                 App_like_list.append( App )
 
         for App_like in App_like_list:
-            App_like["like_count"] = db.likes.count_documents({"num": App_like['num']})
-            App_like["chkLike"] = bool(db.likes.find_one({"num": App_like['num'],
+            App_like["like_count"] = db.likes.count_documents({"App_id": str(App_like['_id'])})
+            App_like["chkLike"] = bool(db.likes.find_one({"App_id": str(App_like['_id']),
                                                      "username": user_info["username"]}))
         return render_template('index_like.html', user_info=user_info, App_like_list=App_like_list)
 
@@ -288,10 +277,10 @@ def update_like():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"username": payload["id"]})
-        num_receive = int(request.form["num_give"])
+        App_id_receive = request.form["App_id_give"]
         action_receive = request.form["action_give"]
         doc = {
-            "num": num_receive,
+            "App_id": App_id_receive,
             "username": user_info["username"]
         }
         if action_receive == "like":
@@ -299,13 +288,12 @@ def update_like():
         else:
             db.likes.delete_one(doc)
         # action 이후 좋아요 개수를 구한다
-        count = db.likes.count_documents({"num": num_receive})
+        count = db.likes.count_documents({"App_id": App_id_receive})
         return jsonify({"result": "success", 'msg': 'updated', "count": count})
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
-
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

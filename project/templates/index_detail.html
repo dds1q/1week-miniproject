@@ -142,12 +142,12 @@
         });
 
         // 닉네임과 코멘트를 작성 후 comments 테이블에 저장
-        function save_comment(num) {
+        function save_comment(_id) {
             let comment = $('#comment').val()
             $.ajax({
                 type: 'POST',
                 url: '/save-comment',
-                data: {comment_give: comment, num_give: num},
+                data: {comment_give: comment, App_id_give: _id},
                 success: function (response) {
                     alert(response['msg'])
                     window.location.reload()
@@ -164,8 +164,8 @@
         }
 
         // 좋아요 버튼을 누를 시 등록 또는 취소되는 함수
-        function toggle_like(num) {
-            console.log(num)
+        function toggle_like(id) {
+            console.log(id)
             let $i_like = $('#heart').find("i")
 
             if ($i_like.hasClass("bi-heart-fill")) {
@@ -173,7 +173,7 @@
                     type: "POST",
                     url: "/update_like",
                     data: {
-                        num_give: num,
+                        App_id_give: id,
                         action_give: "unlike"
                     },
                     success: function (response) {
@@ -187,7 +187,7 @@
                     type: "POST",
                     url: "/update_like",
                     data: {
-                        num_give: num,
+                        App_id_give: id,
                         action_give: "like"
                     },
                     success: function (response) {
@@ -200,12 +200,12 @@
             }
         }
 
-        function delete_post(num) {
+        function delete_post(id) {
             if (confirm("정말 삭제하시겠습니까??") == true) {    //확인
                 $.ajax({
                     type: 'POST',
                     url: '/delete_post',
-                    data: {num_give: num},
+                    data: {App_id_give: id },
                     success: function (response) {
                         alert(response['msg'])
                         window.location.href = '/main'
@@ -225,7 +225,7 @@
                 $.ajax({
                     type: 'POST',
                     url: '/delete_comment',
-                    data: {id_give: id},
+                    data: {comment_id_give: id},
                     success: function (response) {
                         alert(response['msg'])
                         window.location.reload()
@@ -235,6 +235,8 @@
             } else {   //취소
                 return false;
             }
+
+
         }
 
     </script>
@@ -293,7 +295,7 @@
                 <h4>작성자 : {{ board.username }}</h4>
                 <h4>장소 : {{ board.address }}</h4>
                 <h4>평점 : {{ board.star }}</h4>
-                <a id="heart" onclick="toggle_like('{{ board.num }}')">
+                <a id="heart" onclick="toggle_like('{{ board._id }}')">
                     {% if chkLike == true %}
                         <i class="bi bi-heart-fill" aria-hidden="true"></i>
                     {% else %}
@@ -303,7 +305,7 @@
                 </a>
                 <div style="margin: 10px">
                     {% if board.username == user_info.username %}
-                        <button type="button" class="btn btn-danger" onclick="delete_post('{{ board.num }}')">삭제
+                        <button type="button" class="btn btn-danger" onclick="delete_post('{{ board._id }}')">삭제
                         </button>
                     {% endif %}
                 </div>
@@ -320,7 +322,7 @@
                 <label for="comment">코멘트 입력</label>
             </div>
             <div class="mybtns">
-                <button onclick="save_comment( '{{ board.num }}' )" type="button" class="btn btn-dark">기록하기</button>
+                <button onclick="save_comment( '{{ board._id }}' )" type="button" class="btn btn-dark">기록하기</button>
             </div>
             <div class="cards" id="comment-list">
                 <!--                코멘트들 나열됨-->

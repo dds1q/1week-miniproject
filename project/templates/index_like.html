@@ -298,9 +298,9 @@
             window.location.href=`/search?search_give=${search}`
         }
 
-        function toggle_like(num) {
-            console.log(num)
-            let $heart = $('#heart'+num )
+        function toggle_like(id) {
+            console.log(id)
+            let $heart = $('#heart'+id )
             let $i_like = $heart.find("i")
 
             if ( $i_like.hasClass("bi-heart-fill")) {
@@ -308,13 +308,13 @@
                     type: "POST",
                     url: "/update_like",
                     data: {
-                        num_give: num,
+                        App_id_give: id,
                         action_give: "unlike"
                     },
                     success: function (response) {
                         console.log("unlike")
                         $i_like.addClass("bi-heart").removeClass("bi-heart-fill")
-                        $('#heart'+num+ ' span').text( response['count'] )
+                        $('#heart'+id+ ' span').text( response['count'] )
                     }
                 })
             } else {
@@ -322,13 +322,13 @@
                     type: "POST",
                     url: "/update_like",
                     data: {
-                        num_give: num,
+                        App_id_give: id,
                         action_give: "like"
                     },
                     success: function (response) {
                         console.log("like")
                         $i_like.addClass("bi-heart-fill").removeClass("bi-heart")
-                        $('#heart'+num+ ' span').text( response['count'] )
+                        $('#heart'+id+ ' span').text( response['count'] )
                     }
                 })
 
@@ -457,8 +457,8 @@
                                 <p>작성시간 : {{App_like.time}}</p>
                                 <div style="justify-content : space-evenly; display: flex">
                                     <a href="#" class="btn btn-primary"
-                                       onclick="window.location.href='/detail?num_give={{ App_like.num }}'">자세히 보기</a>
-                                    <a id="heart{{App_like.num}}" onclick="toggle_like('{{ App_like.num }}')">
+                                       onclick="window.location.href='/detail?App_id_give={{ App_like._id }}'">자세히 보기</a>
+                                    <a id="heart{{App_like._id}}" onclick="toggle_like('{{ App_like._id }}')">
                                         {% if App_like.chkLike == true %}
                                         <i class="bi bi-heart-fill" aria-hidden="true"></i>
                                         {% else %}
