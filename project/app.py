@@ -1,4 +1,6 @@
+from bson import ObjectId
 from pymongo import MongoClient
+
 import jwt
 import datetime
 import hashlib
@@ -191,6 +193,23 @@ def web_write_get():
     write_list = list(db.App.find({}, {'_id': False}))
     return jsonify({'orders': write_list})
 
+# 게시글 삭제
+@app.route("/delete_post", methods=["POST"])
+def delete_post():
+    num_receive = int( request.form['num_give'] )
+    db.App.delete_one({'num':num_receive} )
+    db.comments.delete_many({'num': num_receive} )
+    db.likes.delete_many({'num': num_receive})
+    return jsonify({'msg':'삭제 완료!'})
+
+# 댓글 삭제
+@app.route("/delete_comment", methods=["POST"])
+def delete_comment():
+    id_receive = request.form['id_give']
+    db.comments.delete_one({'_id': ObjectId( id_receive ) } )
+    return jsonify({'msg':'삭제 완료!'})
+
+
 @app.route('/detail')
 def home1():
     token_receive = request.cookies.get('mytoken')
@@ -199,7 +218,7 @@ def home1():
         user_info = db.users.find_one({"username": payload["id"]})
         num_receive = int(request.args.get("num_give"))
         board = db.App.find_one({'num': num_receive})
-        comment_list = list(db.comments.find({'num': num_receive}, {'_id': False}).sort("time",-1))
+        comment_list = list(db.comments.find({'num': num_receive}).sort("time",-1))
 
         like_count = db.likes.count_documents({"num": num_receive})
         chkLike = bool(db.likes.find_one({"num": num_receive, "username": user_info["username"]}))
