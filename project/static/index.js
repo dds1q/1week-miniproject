@@ -8,6 +8,12 @@ function sign_out() {
 
     window.location.href = '/'
 }
+/*
+document.addEventListener('keydown', function(event) {
+  if (event.keyCode === 13) {
+    event.preventDefault();
+  };
+}, true);*/
 
 // 게시물 없을 시 함수
 function InnerHtml() {

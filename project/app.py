@@ -58,7 +58,7 @@ def login():
 
 @app.route("/search")
 def search():
-    search_target = request.args.get("search_give")
+    search_target = request.args.get("search_give", "")
     search_info = list(db.App.find({"title": { '$regex' : search_target }}).sort("time",-1))
     token_receive = request.cookies.get('mytoken')
     print(search_target)
