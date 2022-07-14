@@ -268,8 +268,8 @@
                                 <p>평점 : {{info.star}}</p>
                                 <p class="mycomment">리뷰 : {{ info.comment }}</p>
                                 <p>작성시간 : {{info.time}}</p>
-                                <div style="justify-content : space-evenly; display: flex">
-                                    <a href="#" class="btn btn-primary"
+                                <div class="icon_box">
+                                    <a href="#a" class="btn btn-primary view_btn"
                                        onclick="window.location.href='/detail?App_id_give={{ info._id }}'">자세히 보기</a>
                                     <a id="heart{{info._id}}" onclick="toggle_like('{{ info._id }}')">
                                         {% if info.chkLike == true %}

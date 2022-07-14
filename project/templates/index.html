@@ -265,7 +265,7 @@
                                 <p class="mycomment">리뷰 : {{ App.comment }}</p>
                                 <p>작성시간 : {{App.time}}</p>
                                 <div class="icon_box">
-                                    <a href="#" class="btn btn-primary veiw_btn"
+                                    <a href="#a" class="btn btn-primary view_btn"
                                        onclick="window.location.href='/detail?App_id_give={{ App._id }}'">자세히 보기</a>
                                     <a id="heart{{App._id}}" onclick="toggle_like('{{ App._id }}')">
                                         {% if App.chkLike == true %}
