@@ -41,7 +41,7 @@ flask, pymongo, pyjwt 1.7.1, jinja2, requests,
 <img width="950" alt="회원가입" src="https://user-images.githubusercontent.com/80199125/178905734-60c48aeb-53ac-4e08-b934-5cdf25be56b0.PNG">
 <img width="951" alt="로그인화면" src="https://user-images.githubusercontent.com/80199125/178905748-a7458375-32e3-47c4-9506-a78aa00f2871.png">
 
-### 메인화면
+#### 메인화면
 <img width="951" alt="메인1" src="https://user-images.githubusercontent.com/80199125/178905811-d0d2c37c-44b3-410a-8eaa-56f80acb4cd1.PNG">
 <img width="952" alt="전체화면" src="https://user-images.githubusercontent.com/80199125/178905832-9de3c94e-9d81-47b1-8d66-b13572eea7c7.PNG">
 
@@ -51,11 +51,11 @@ flask, pymongo, pyjwt 1.7.1, jinja2, requests,
 <img width="315" alt="전체세팅" src="https://user-images.githubusercontent.com/80199125/178906048-04be3890-d827-463a-8721-cbf173c48eee.PNG">
 
 
-### 좋아요 조회 기능과 검색 기능
+#### 좋아요 조회 기능과 검색 기능
 <img width="373" alt="likelist" src="https://user-images.githubusercontent.com/80199125/178905980-93ab47ba-4b9c-4926-8162-ad57d765c83f.PNG">
 <img width="951" alt="검색결과" src="https://user-images.githubusercontent.com/80199125/178906161-62808cd6-7622-4437-878d-dc3b75ba5986.PNG">
 
-### 상세정보 페이지, 삭제 기능
+#### 상세정보 페이지, 삭제 기능
 <img width="951" alt="삭제기능 + 상세정보페이지" src="https://user-images.githubusercontent.com/80199125/178905989-ce380543-99ac-4d0c-9b87-883caf90e8e7.PNG">
 
 
