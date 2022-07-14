@@ -17,17 +17,11 @@
 ##### - 게시글 카드 클릭시 보여지는 상세 페이지 - <br>
 ![img1 daumcdn](https://user-images.githubusercontent.com/80199125/178867203-da8d921e-1513-4554-b9a5-ef65fc29dbe9.png)<br><br>
 
-#### 개발해야 하는 기능들<br>
-
+#### 개발한 기능들<br>
+로그인, 검색, 좋아요, 좋아요 리스트 조회, 상세정보 페이지, 댓글 기능, 
 
 #### public github repo 주소<br>
 https://github.com/BackDev19/1week-miniproject<br><br>
-
-[표 넣기]
-|왼쪽 정렬|가운데 정렬|오른쪽 정렬|
-|:---|:---:|---:|      // :의 위치가 정렬을 결정
-|내용1|내용2|내용3|
-|내용1|내용2|내용3|
 
 ```
 사용된 패키지들
